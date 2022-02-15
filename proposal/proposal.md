@@ -7,8 +7,10 @@ library(tidyverse)
 library(broom)
 ```
 
-## 1\. Introduction
+## 1. Introduction
 
-## 2\. Data
+data \<- readr::read_csv(file = “../data/my_data.csv”)
 
-## 3\. Data analysis plan
+## 2. Data
+
+## 3. Data analysis plan
