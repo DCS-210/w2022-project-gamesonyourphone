@@ -6,6 +6,7 @@ GamesOnYourPhone - Grace Acton, Finn Conway, Jackson Donahue
 library(tidyverse)
 library(broom)
 library(pillar)
+library(ggplot2)
 ```
 
 ## 1. Introduction
@@ -72,3 +73,50 @@ glimpse(board_games)
     ## $ users_rated    <dbl> 4498, 478, 12019, 314, 15195, 73, 2751, 186, 1263, 6729…
 
 ## 3. Data analysis plan
+
+The main outcome variable we will be looking at is average rating. The
+explanatory variables that we will explore are minimum/maximum number of
+players, playtime, and year of publication. We may limit our analysis to
+observations with a large number of ratings, or do some grouping by
+publisher and publishing date.
+
+``` r
+board_games %>% 
+  group_by(year_published) %>% 
+  summarize(mean = mean(average_rating), 
+            median = median(average_rating),
+            n = n())
+```
+
+    ## # A tibble: 67 × 4
+    ##    year_published  mean median     n
+    ##             <dbl> <dbl>  <dbl> <int>
+    ##  1           1950  5.76   5.73     4
+    ##  2           1951  5.71   5.71     2
+    ##  3           1952  5.68   5.51     3
+    ##  4           1953  4.64   4.40     3
+    ##  5           1954  5.65   5.67     3
+    ##  6           1955  5.83   5.78     4
+    ##  7           1956  5.97   5.82     6
+    ##  8           1957  4.79   4.79     2
+    ##  9           1958  5.52   5.48     8
+    ## 10           1959  5.84   5.58     7
+    ## # … with 57 more rows
+
+``` r
+board_games %>% 
+  group_by(year_published) %>% 
+  summarize(mean_rating = mean(average_rating)) %>% 
+  ggplot(aes(x = year_published, y = mean_rating)) +
+  geom_col()
+```
+
+![](proposal_files/figure-gfm/year-average-rating-1.png)<!-- -->
+
+Very preliminary exploratory data analysis, including some summary
+statistics and visualizations, along with some explanation on how they
+help you learn more about your data. (You can add to these later as you
+work on your project.) The statistical method(s) that you believe will
+be useful in answering your question(s). (You can update these later as
+you work on your project.) What results from these specific statistical
+methods are needed to support your hypothesized answer?

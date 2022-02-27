@@ -8,6 +8,7 @@ output: github_document
 library(tidyverse)
 library(broom)
 library(pillar)
+library(ggplot2)
 ```
 
 ## 1. Introduction
@@ -28,5 +29,26 @@ glimpse(board_games)
 
 ## 3. Data analysis plan
 
+The main outcome variable we will be looking at is average rating. The explanatory variables that we will explore are minimum/maximum number of players, playtime, and year of publication. We may limit our analysis to observations with a large number of ratings, or do some grouping by publisher and publishing date. 
 
+```{r summary-stats}
+board_games %>% 
+  group_by(year_published) %>% 
+  summarize(mean = mean(average_rating), 
+            median = median(average_rating),
+            n = n())
+```
+
+```{r year-average-rating}
+board_games %>% 
+  group_by(year_published) %>% 
+  summarize(mean_rating = mean(average_rating)) %>% 
+  ggplot(aes(x = year_published, y = mean_rating)) +
+  geom_col()
+```
+
+
+Very preliminary exploratory data analysis, including some summary statistics and visualizations, along with some explanation on how they help you learn more about your data. (You can add to these later as you work on your project.)
+The statistical method(s) that you believe will be useful in answering your question(s). (You can update these later as you work on your project.)
+What results from these specific statistical methods are needed to support your hypothesized answer?
 
