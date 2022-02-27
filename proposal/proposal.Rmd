@@ -1,17 +1,20 @@
 ---
-title: "Project proposal"
-author: "Team name"
+title: "Project Proposal: Board Games"
+author: "GamesOnYourPhone - Grace Acton, Finn Conway, Jackson Donahue"
 output: github_document
 ---
 
 ```{r load-packages, message = FALSE}
 library(tidyverse)
 library(broom)
+library(pillar)
 ```
 
 ## 1. Introduction
 
+For our project, we will work with the TidyTuesday Board Games dataset from March 2019. This set was gathered from BoardGameGeek, a website with a database of over 90,000 board games with crowd-sourced reviews. TidyTuesday limited the set to only include games published between 1950 and 2016 with at least 50 ratings. Variables in this set include maximum and minimum numbers of players, the maximum playtime, whether the game has expansion packs, the publisher, and, most importantly, the average rating and number of users who rated it. 
 
+We are interested in how different characteristics of board games influence how they are perceived by players. This can be explored by looking at how the average rating varies with such variables as the number of players needed, the playing time, and when the game was published. 
 
 ## 2. Data
 
@@ -19,6 +22,9 @@ library(broom)
 board_games <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-12/board_games.csv")
 ```
 
+```{r glimpse}
+glimpse(board_games)
+```
 
 ## 3. Data analysis plan
 
