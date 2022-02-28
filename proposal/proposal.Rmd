@@ -15,6 +15,9 @@ library(broom)
 
 ## 2. Data
 
+```{r import-data}
+board_games <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-12/board_games.csv")
+```
 
 
 ## 3. Data analysis plan
