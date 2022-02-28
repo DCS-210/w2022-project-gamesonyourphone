@@ -1,17 +1,21 @@
 ---
-title: "Project proposal"
-author: "Team name"
+title: "Project Proposal: Board Games"
+author: "GamesOnYourPhone - Grace Acton, Finn Conway, Jackson Donahue"
 output: github_document
 ---
 
 ```{r load-packages, message = FALSE}
 library(tidyverse)
 library(broom)
+library(pillar)
+library(ggplot2)
 ```
 
 ## 1. Introduction
 
+For our project, we will work with the TidyTuesday Board Games dataset from March 2019. This set was gathered from BoardGameGeek, a website with a database of over 90,000 board games with crowd-sourced reviews. TidyTuesday limited the set to only include games published between 1950 and 2016 with at least 50 ratings. Variables in this set include maximum and minimum numbers of players, the maximum playtime, whether the game has expansion packs, the publisher, and, most importantly, the average rating and number of users who rated it. 
 
+We are interested in how different characteristics of board games influence how they are perceived by players. This can be explored by looking at how the average rating varies with such variables as the number of players needed, the playing time, and when the game was published. 
 
 ## 2. Data
 
@@ -19,8 +23,32 @@ library(broom)
 board_games <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-12/board_games.csv")
 ```
 
+```{r glimpse}
+glimpse(board_games)
+```
 
 ## 3. Data analysis plan
 
+The main outcome variable we will be looking at is average rating. The explanatory variables that we will explore are minimum/maximum number of players, playtime, and year of publication. We may limit our analysis to observations with a large number of ratings, or do some grouping by publisher and publishing date. 
 
+```{r summary-stats}
+board_games %>% 
+  group_by(year_published) %>% 
+  summarize(mean = mean(average_rating), 
+            median = median(average_rating),
+            n = n())
+```
+
+```{r year-average-rating}
+board_games %>% 
+  group_by(year_published) %>% 
+  summarize(mean_rating = mean(average_rating)) %>% 
+  ggplot(aes(x = year_published, y = mean_rating)) +
+  geom_col()
+```
+
+
+Very preliminary exploratory data analysis, including some summary statistics and visualizations, along with some explanation on how they help you learn more about your data. (You can add to these later as you work on your project.)
+The statistical method(s) that you believe will be useful in answering your question(s). (You can update these later as you work on your project.)
+What results from these specific statistical methods are needed to support your hypothesized answer?
 
