@@ -52,7 +52,8 @@ board_games %>%
 
 This visualization demonstrates that rating of games increases the later the games are created. We may want to investigate this more by creating other visualizations to determine the cause of this. Is it because games in a certain category are more popular and those games have only recently been created? What else can help explain the rising ratings? 
 
-Very preliminary exploratory data analysis, including some summary statistics and visualizations, along with some explanation on how they help you learn more about your data. (You can add to these later as you work on your project.)
-The statistical method(s) that you believe will be useful in answering your question(s). (You can update these later as you work on your project.)
-What results from these specific statistical methods are needed to support your hypothesized answer?
+### Monopoly
+
+There are many, many versions of Monopoly within this data set. We'd like to look at this subset to see how they vary in popularity, both in terms of average rating and the number of ratings written for each. 
+
 
