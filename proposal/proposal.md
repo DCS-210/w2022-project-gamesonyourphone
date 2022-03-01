@@ -36,12 +36,10 @@ board_games <- readr::read_csv("https://raw.githubusercontent.com/rfordatascienc
 ```
 
     ## Rows: 10532 Columns: 22
-
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr (12): description, image, name, thumbnail, artist, category, compilation...
     ## dbl (10): game_id, max_players, max_playtime, min_age, min_players, min_play...
-
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -122,10 +120,8 @@ other visualizations to determine the cause of this. Is it because games
 in a certain category are more popular and those games have only
 recently been created? What else can help explain the rising ratings?
 
-Very preliminary exploratory data analysis, including some summary
-statistics and visualizations, along with some explanation on how they
-help you learn more about your data. (You can add to these later as you
-work on your project.) The statistical method(s) that you believe will
-be useful in answering your question(s). (You can update these later as
-you work on your project.) What results from these specific statistical
-methods are needed to support your hypothesized answer?
+### Monopoly
+
+There are many, many versions of Monopoly within this data set. We’d
+like to look at this subset to see how they vary in popularity, both in
+terms of average rating and the number of ratings written for each.
