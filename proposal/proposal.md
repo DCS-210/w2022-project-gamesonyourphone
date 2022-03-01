@@ -111,7 +111,10 @@ board_games %>%
   group_by(year_published) %>% 
   summarize(mean_rating = mean(average_rating)) %>% 
   ggplot(aes(x = year_published, y = mean_rating)) +
-  geom_col()
+  geom_col() +
+    labs(title = "Median Rating of Games Over Time",
+       x = "Year Published", 
+       y = "Median Rating")
 ```
 
 ![](proposal_files/figure-gfm/year-average-rating-1.png)<!-- -->
