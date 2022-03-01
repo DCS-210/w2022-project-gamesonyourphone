@@ -11,13 +11,6 @@ library(ggplot2)
 
 ## 1. Introduction
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-data \<- readr::read_csv(file = “../data/my_data.csv”)
-
-## 2. Data
-=======
-=======
 For our project, we will work with the TidyTuesday Board Games dataset
 from March 2019. This set was gathered from BoardGameGeek, a website
 with a database of over 90,000 board games with crowd-sourced reviews.
@@ -31,9 +24,11 @@ We are interested in how different characteristics of board games
 influence how they are perceived by players. This can be explored by
 looking at how the average rating varies with such variables as the
 number of players needed, the playing time, and when the game was
-published.
+published. The mechanic and category variables will also be useful to us
+in our research, but are vast and will need to be simplified to make
+meaningful connections. We may also want to review popularity based on
+game artists, locating the most popular ones.
 
->>>>>>> a5adbe1a4b4f8d02d1b24733207e62d3e32eefd8
 ## 2. Data
 
 ``` r
@@ -50,7 +45,6 @@ board_games <- readr::read_csv("https://raw.githubusercontent.com/rfordatascienc
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
->>>>>>> 4abda6bbcb58341f8fa61cd6441385d60dea260f
 
 ``` r
 glimpse(board_games)
@@ -121,6 +115,12 @@ board_games %>%
 ```
 
 ![](proposal_files/figure-gfm/year-average-rating-1.png)<!-- -->
+
+This visualization demonstrates that rating of games increases the later
+the games are created. We may want to investigate this more by creating
+other visualizations to determine the cause of this. Is it because games
+in a certain category are more popular and those games have only
+recently been created? What else can help explain the rising ratings?
 
 Very preliminary exploratory data analysis, including some summary
 statistics and visualizations, along with some explanation on how they
