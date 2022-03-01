@@ -109,7 +109,10 @@ board_games %>%
   group_by(year_published) %>% 
   summarize(mean_rating = mean(average_rating)) %>% 
   ggplot(aes(x = year_published, y = mean_rating)) +
-  geom_col()
+  geom_col() +
+    labs(title = "Median Rating of Games Over Time",
+       x = "Year Published", 
+       y = "Median Rating")
 ```
 
 ![](proposal_files/figure-gfm/year-average-rating-1.png)<!-- -->
@@ -122,6 +125,90 @@ recently been created? What else can help explain the rising ratings?
 
 ### Monopoly
 
-There are many, many versions of Monopoly within this data set. We’d
-like to look at this subset to see how they vary in popularity, both in
-terms of average rating and the number of ratings written for each.
+There are 72 versions of Monopoly within this data set. We’d like to
+look at this subset to see how they vary in popularity, both in terms of
+average rating and the number of ratings written for each.
+
+``` r
+board_games %>% 
+  filter(grepl("Monopoly", name))
+```
+
+    ## # A tibble: 72 × 22
+    ##    game_id description        image max_players max_playtime min_age min_players
+    ##      <dbl> <chr>              <chr>       <dbl>        <dbl>   <dbl>       <dbl>
+    ##  1     684 Rummy for Monopol… //cf…           6           30       8           2
+    ##  2    1298 Monopoly Star War… //cf…           8           90       8           2
+    ##  3    1420 Don't Go to Jail … //cf…           4           20       8           2
+    ##  4    1931 The &quot;Bust~th… //cf…           6          120       8           2
+    ##  5    1932 In this game the … //cf…           6          120       8           2
+    ##  6    2929 Monopoly with a d… //cf…           8           60       8           2
+    ##  7    3020 Forget Star Wars.… //cf…           8          180       8           2
+    ##  8    3065 Monopoly - Stock … //cf…           6          120       8           2
+    ##  9    3394 It's Monopoly wit… //cf…           6          120       8           2
+    ## 10    5029 A monopoly (from … //cf…           8          120       8           2
+    ## # … with 62 more rows, and 15 more variables: min_playtime <dbl>, name <chr>,
+    ## #   playing_time <dbl>, thumbnail <chr>, year_published <dbl>, artist <chr>,
+    ## #   category <chr>, compilation <chr>, designer <chr>, expansion <chr>,
+    ## #   family <chr>, mechanic <chr>, publisher <chr>, average_rating <dbl>,
+    ## #   users_rated <dbl>
+
+### Catan
+
+There are also a ton of versions of Catan!
+
+``` r
+board_games %>% 
+  filter(grepl("Catan", name))
+```
+
+    ## # A tibble: 24 × 22
+    ##    game_id description        image max_players max_playtime min_age min_players
+    ##      <dbl> <chr>              <chr>       <dbl>        <dbl>   <dbl>       <dbl>
+    ##  1      13 In Catan (formerl… //cf…           4          120      10           3
+    ##  2     278 Catan Card Game b… //cf…           2           90      10           2
+    ##  3    1897 The foray into sp… //cf…           4          120      12           3
+    ##  4    2338 Starship Catan is… //cf…           2           60      12           2
+    ##  5    3972 Settlers of Catan… //cf…           4           90      10           3
+    ##  6    5824 A simplified buil… //cf…           4           20       4           2
+    ##  7   22766 This limited 10th… //cf…           2           60      10           2
+    ##  8   24511 From the SimplyFu… //cf…           4           30      10           2
+    ##  9   25234 Catan Histories: … //cf…           4          120      10           3
+    ## 10   27710 Like all the othe… //cf…           4           15       7           1
+    ## # … with 14 more rows, and 15 more variables: min_playtime <dbl>, name <chr>,
+    ## #   playing_time <dbl>, thumbnail <chr>, year_published <dbl>, artist <chr>,
+    ## #   category <chr>, compilation <chr>, designer <chr>, expansion <chr>,
+    ## #   family <chr>, mechanic <chr>, publisher <chr>, average_rating <dbl>,
+    ## #   users_rated <dbl>
+
+### Game Categories
+
+We may break our data into smaller subsets based on the categories
+assigned to the games. It will be interesting to see the number in each
+group, but also how that impacts ratings and popularity.
+
+We are also curious about which categories frequently appear together,
+and might explore using a heatmap to see what overlaps are common.
+
+``` r
+board_games %>% 
+  separate_rows(category, sep = ",") %>% 
+  group_by(category) %>% 
+  summarize(number = n()) %>% 
+  arrange(desc(number))
+```
+
+    ## # A tibble: 84 × 2
+    ##    category          number
+    ##    <chr>              <int>
+    ##  1 Card Game           2981
+    ##  2 Wargame             2034
+    ##  3 Fantasy             1218
+    ##  4 Fighting             900
+    ##  5 Economic             878
+    ##  6 Science Fiction      850
+    ##  7 Dice                 838
+    ##  8 Party Game           833
+    ##  9 Abstract Strategy    710
+    ## 10 Children's Game      704
+    ## # … with 74 more rows

@@ -54,6 +54,33 @@ This visualization demonstrates that rating of games increases the later the gam
 
 ### Monopoly
 
-There are many, many versions of Monopoly within this data set. We'd like to look at this subset to see how they vary in popularity, both in terms of average rating and the number of ratings written for each. 
+There are 72 versions of Monopoly within this data set. We'd like to look at this subset to see how they vary in popularity, both in terms of average rating and the number of ratings written for each. 
+
+```{r monopoly}
+board_games %>% 
+  filter(grepl("Monopoly", name))
+```
+### Catan
+
+There are also a ton of versions of Catan!
+
+```{r catan} 
+board_games %>% 
+  filter(grepl("Catan", name))
+```
+
+### Game Categories
+
+We may break our data into smaller subsets based on the categories assigned to the games. It will be interesting to see the number in each group, but also how that impacts ratings and popularity. 
+
+We are also curious about which categories frequently appear together, and might explore using a heatmap to see what overlaps are common. 
+
+```{r game-categories}
+board_games %>% 
+  separate_rows(category, sep = ",") %>% 
+  group_by(category) %>% 
+  summarize(number = n()) %>% 
+  arrange(desc(number))
+```
 
 
