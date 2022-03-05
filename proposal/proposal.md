@@ -7,6 +7,7 @@ library(tidyverse)
 library(broom)
 library(pillar)
 library(ggplot2)
+library(skimr)
 ```
 
 ## 1. Introduction
@@ -32,7 +33,7 @@ game artists, locating the most popular ones.
 ## 2. Data
 
 ``` r
-board_games <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-12/board_games.csv")
+board_games <- readr::read_csv("~/Desktop/w2022-project-gamesonyourphone/data/board_games.csv")
 ```
 
     ## Rows: 10532 Columns: 22
@@ -45,33 +46,54 @@ board_games <- readr::read_csv("https://raw.githubusercontent.com/rfordatascienc
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
-glimpse(board_games)
+skim(board_games)
 ```
 
-    ## Rows: 10,532
-    ## Columns: 22
-    ## $ game_id        <dbl> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, …
-    ## $ description    <chr> "Die Macher is a game about seven sequential political …
-    ## $ image          <chr> "//cf.geekdo-images.com/images/pic159509.jpg", "//cf.ge…
-    ## $ max_players    <dbl> 5, 4, 4, 4, 6, 6, 2, 5, 4, 6, 7, 5, 4, 4, 6, 4, 2, 8, 4…
-    ## $ max_playtime   <dbl> 240, 30, 60, 60, 90, 240, 20, 120, 90, 60, 45, 60, 120,…
-    ## $ min_age        <dbl> 14, 12, 10, 12, 12, 12, 8, 12, 13, 10, 13, 12, 10, 10, …
-    ## $ min_players    <dbl> 3, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 3, 3, 2, 3, 2, 2, 2…
-    ## $ min_playtime   <dbl> 240, 30, 30, 60, 90, 240, 20, 120, 90, 60, 45, 45, 60, …
-    ## $ name           <chr> "Die Macher", "Dragonmaster", "Samurai", "Tal der König…
-    ## $ playing_time   <dbl> 240, 30, 60, 60, 90, 240, 20, 120, 90, 60, 45, 60, 120,…
-    ## $ thumbnail      <chr> "//cf.geekdo-images.com/images/pic159509_t.jpg", "//cf.…
-    ## $ year_published <dbl> 1986, 1981, 1998, 1992, 1964, 1989, 1978, 1993, 1998, 1…
-    ## $ artist         <chr> "Marcus Gschwendtner", "Bob Pepper", "Franz Vohwinkel",…
-    ## $ category       <chr> "Economic,Negotiation,Political", "Card Game,Fantasy", …
-    ## $ compilation    <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "CATAN …
-    ## $ designer       <chr> "Karl-Heinz Schmiel", "G. W. \"Jerry\" D'Arcey", "Reine…
-    ## $ expansion      <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, "Elfengold,Elfenlan…
-    ## $ family         <chr> "Country: Germany,Valley Games Classic Line", "Animals:…
-    ## $ mechanic       <chr> "Area Control / Area Influence,Auction/Bidding,Dice Rol…
-    ## $ publisher      <chr> "Hans im Glück Verlags-GmbH,Moskito Spiele,Valley Games…
-    ## $ average_rating <dbl> 7.66508, 6.60815, 7.44119, 6.60675, 7.35830, 6.52534, 6…
-    ## $ users_rated    <dbl> 4498, 478, 12019, 314, 15195, 73, 2751, 186, 1263, 6729…
+|                                                  |             |
+|:-------------------------------------------------|:------------|
+| Name                                             | board_games |
+| Number of rows                                   | 10532       |
+| Number of columns                                | 22          |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |             |
+| Column type frequency:                           |             |
+| character                                        | 12          |
+| numeric                                          | 10          |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |             |
+| Group variables                                  | None        |
+
+Data summary
+
+**Variable type: character**
+
+| skim_variable | n_missing | complete_rate | min |   max | empty | n_unique | whitespace |
+|:--------------|----------:|--------------:|----:|------:|------:|---------:|-----------:|
+| description   |         0 |          1.00 |  49 | 11476 |     0 |    10528 |          0 |
+| image         |         1 |          1.00 |  40 |    44 |     0 |    10527 |          0 |
+| name          |         0 |          1.00 |   1 |    84 |     0 |    10357 |          0 |
+| thumbnail     |         1 |          1.00 |  42 |    46 |     0 |    10527 |          0 |
+| artist        |      2773 |          0.74 |   3 |  6860 |     0 |     4641 |          0 |
+| category      |        94 |          0.99 |   4 |   173 |     0 |     3860 |          0 |
+| compilation   |     10122 |          0.04 |   4 |   734 |     0 |      336 |          0 |
+| designer      |       126 |          0.99 |   3 |   184 |     0 |     4678 |          0 |
+| expansion     |      7780 |          0.26 |   2 | 11325 |     0 |     2634 |          0 |
+| family        |      2808 |          0.73 |   2 |  1779 |     0 |     3918 |          0 |
+| mechanic      |       950 |          0.91 |   6 |   314 |     0 |     3209 |          0 |
+| publisher     |         3 |          1.00 |   2 |  2396 |     0 |     5512 |          0 |
+
+**Variable type: numeric**
+
+| skim_variable  | n_missing | complete_rate |     mean |       sd |      p0 |     p25 |      p50 |       p75 |   p100 | hist  |
+|:---------------|----------:|--------------:|---------:|---------:|--------:|--------:|---------:|----------:|-------:|:------|
+| game_id        |         0 |             1 | 62059.20 | 66223.72 |    1.00 | 5444.50 | 28822.50 | 126409.50 | 216725 | ▇▁▁▂▁ |
+| max_players    |         0 |             1 |     5.66 |    18.88 |    0.00 |    4.00 |     4.00 |      6.00 |    999 | ▇▁▁▁▁ |
+| max_playtime   |         0 |             1 |    91.34 |   659.75 |    0.00 |   30.00 |    45.00 |     90.00 |  60000 | ▇▁▁▁▁ |
+| min_age        |         0 |             1 |     9.71 |     3.45 |    0.00 |    8.00 |    10.00 |     12.00 |     42 | ▅▇▁▁▁ |
+| min_players    |         0 |             1 |     2.07 |     0.66 |    0.00 |    2.00 |     2.00 |      2.00 |      9 | ▁▇▁▁▁ |
+| min_playtime   |         0 |             1 |    80.88 |   637.87 |    0.00 |   25.00 |    45.00 |     90.00 |  60000 | ▇▁▁▁▁ |
+| playing_time   |         0 |             1 |    91.34 |   659.75 |    0.00 |   30.00 |    45.00 |     90.00 |  60000 | ▇▁▁▁▁ |
+| year_published |         0 |             1 |  2003.07 |    12.28 | 1950.00 | 1998.00 |  2007.00 |   2012.00 |   2016 | ▁▁▁▂▇ |
+| average_rating |         0 |             1 |     6.37 |     0.85 |    1.38 |    5.83 |     6.39 |      6.94 |      9 | ▁▁▃▇▁ |
+| users_rated    |         0 |             1 |   870.08 |  2880.21 |   50.00 |   85.00 |   176.00 |    518.00 |  67655 | ▇▁▁▁▁ |
 
 ## 3. Data analysis plan
 

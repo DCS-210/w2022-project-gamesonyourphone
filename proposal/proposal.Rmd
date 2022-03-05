@@ -9,6 +9,7 @@ library(tidyverse)
 library(broom)
 library(pillar)
 library(ggplot2)
+library(skimr)
 ```
 
 ## 1. Introduction
@@ -20,11 +21,11 @@ We are interested in how different characteristics of board games influence how 
 ## 2. Data
 
 ```{r import-data}
-board_games <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-12/board_games.csv")
+board_games <- readr::read_csv("~/Desktop/w2022-project-gamesonyourphone/data/board_games.csv")
 ```
 
 ```{r glimpse}
-glimpse(board_games)
+skim(board_games)
 ```
 
 ## 3. Data analysis plan
