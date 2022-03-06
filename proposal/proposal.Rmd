@@ -61,14 +61,36 @@ There are 72 versions of Monopoly within this data set. We'd like to look at thi
 board_games %>% 
   filter(grepl("Monopoly", name))
 ```
+
+We can explore the characteristics of specifically Monopoly games. 
+
+```{r monopoly_statistics}
+board_games %>% 
+  filter(grepl("Monopoly", name)) %>% 
+  summarise(mean = mean(average_rating),
+            max = max(average_rating),
+            min = min(average_rating))
+```
+
 ### Catan
 
 There are also a ton of versions of Catan!
 
 ```{r catan} 
 board_games %>% 
-  filter(grepl("Catan", name))
+  filter(grepl("Catan", name)) 
 ```
+
+We can explore the characteristics of specifically Catan games. 
+
+```{r catan_statistics}
+board_games %>% 
+  filter(grepl("Catan", name)) %>% 
+  summarise(mean = mean(average_rating),
+            max = max(average_rating),
+            min = min(average_rating))
+```
+
 
 ### Game Categories
 
