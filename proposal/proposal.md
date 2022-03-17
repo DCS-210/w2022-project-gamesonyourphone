@@ -7,6 +7,7 @@ library(tidyverse)
 library(broom)
 library(pillar)
 library(ggplot2)
+library(skimr)
 ```
 
 ## 1. Introduction
@@ -24,53 +25,75 @@ We are interested in how different characteristics of board games
 influence how they are perceived by players. This can be explored by
 looking at how the average rating varies with such variables as the
 number of players needed, the playing time, and when the game was
-published.
+published. The mechanic and category variables will also be useful to us
+in our research, but are vast and will need to be simplified to make
+meaningful connections. We may also want to review popularity based on
+game artists, locating the most popular ones.
 
 ## 2. Data
 
 ``` r
-board_games <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-12/board_games.csv")
+board_games <- readr::read_csv("~/Desktop/w2022-project-gamesonyourphone/data/board_games.csv")
 ```
 
     ## Rows: 10532 Columns: 22
-
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr (12): description, image, name, thumbnail, artist, category, compilation...
     ## dbl (10): game_id, max_players, max_playtime, min_age, min_players, min_play...
-
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 ``` r
-glimpse(board_games)
+skim(board_games)
 ```
 
-    ## Rows: 10,532
-    ## Columns: 22
-    ## $ game_id        <dbl> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, …
-    ## $ description    <chr> "Die Macher is a game about seven sequential political …
-    ## $ image          <chr> "//cf.geekdo-images.com/images/pic159509.jpg", "//cf.ge…
-    ## $ max_players    <dbl> 5, 4, 4, 4, 6, 6, 2, 5, 4, 6, 7, 5, 4, 4, 6, 4, 2, 8, 4…
-    ## $ max_playtime   <dbl> 240, 30, 60, 60, 90, 240, 20, 120, 90, 60, 45, 60, 120,…
-    ## $ min_age        <dbl> 14, 12, 10, 12, 12, 12, 8, 12, 13, 10, 13, 12, 10, 10, …
-    ## $ min_players    <dbl> 3, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 3, 3, 2, 3, 2, 2, 2…
-    ## $ min_playtime   <dbl> 240, 30, 30, 60, 90, 240, 20, 120, 90, 60, 45, 45, 60, …
-    ## $ name           <chr> "Die Macher", "Dragonmaster", "Samurai", "Tal der König…
-    ## $ playing_time   <dbl> 240, 30, 60, 60, 90, 240, 20, 120, 90, 60, 45, 60, 120,…
-    ## $ thumbnail      <chr> "//cf.geekdo-images.com/images/pic159509_t.jpg", "//cf.…
-    ## $ year_published <dbl> 1986, 1981, 1998, 1992, 1964, 1989, 1978, 1993, 1998, 1…
-    ## $ artist         <chr> "Marcus Gschwendtner", "Bob Pepper", "Franz Vohwinkel",…
-    ## $ category       <chr> "Economic,Negotiation,Political", "Card Game,Fantasy", …
-    ## $ compilation    <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "CATAN …
-    ## $ designer       <chr> "Karl-Heinz Schmiel", "G. W. \"Jerry\" D'Arcey", "Reine…
-    ## $ expansion      <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, "Elfengold,Elfenlan…
-    ## $ family         <chr> "Country: Germany,Valley Games Classic Line", "Animals:…
-    ## $ mechanic       <chr> "Area Control / Area Influence,Auction/Bidding,Dice Rol…
-    ## $ publisher      <chr> "Hans im Glück Verlags-GmbH,Moskito Spiele,Valley Games…
-    ## $ average_rating <dbl> 7.66508, 6.60815, 7.44119, 6.60675, 7.35830, 6.52534, 6…
-    ## $ users_rated    <dbl> 4498, 478, 12019, 314, 15195, 73, 2751, 186, 1263, 6729…
+|                                                  |             |
+|:-------------------------------------------------|:------------|
+| Name                                             | board_games |
+| Number of rows                                   | 10532       |
+| Number of columns                                | 22          |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |             |
+| Column type frequency:                           |             |
+| character                                        | 12          |
+| numeric                                          | 10          |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |             |
+| Group variables                                  | None        |
+
+Data summary
+
+**Variable type: character**
+
+| skim_variable | n_missing | complete_rate | min |   max | empty | n_unique | whitespace |
+|:--------------|----------:|--------------:|----:|------:|------:|---------:|-----------:|
+| description   |         0 |          1.00 |  49 | 11476 |     0 |    10528 |          0 |
+| image         |         1 |          1.00 |  40 |    44 |     0 |    10527 |          0 |
+| name          |         0 |          1.00 |   1 |    84 |     0 |    10357 |          0 |
+| thumbnail     |         1 |          1.00 |  42 |    46 |     0 |    10527 |          0 |
+| artist        |      2773 |          0.74 |   3 |  6860 |     0 |     4641 |          0 |
+| category      |        94 |          0.99 |   4 |   173 |     0 |     3860 |          0 |
+| compilation   |     10122 |          0.04 |   4 |   734 |     0 |      336 |          0 |
+| designer      |       126 |          0.99 |   3 |   184 |     0 |     4678 |          0 |
+| expansion     |      7780 |          0.26 |   2 | 11325 |     0 |     2634 |          0 |
+| family        |      2808 |          0.73 |   2 |  1779 |     0 |     3918 |          0 |
+| mechanic      |       950 |          0.91 |   6 |   314 |     0 |     3209 |          0 |
+| publisher     |         3 |          1.00 |   2 |  2396 |     0 |     5512 |          0 |
+
+**Variable type: numeric**
+
+| skim_variable  | n_missing | complete_rate |     mean |       sd |      p0 |     p25 |      p50 |       p75 |   p100 | hist  |
+|:---------------|----------:|--------------:|---------:|---------:|--------:|--------:|---------:|----------:|-------:|:------|
+| game_id        |         0 |             1 | 62059.20 | 66223.72 |    1.00 | 5444.50 | 28822.50 | 126409.50 | 216725 | ▇▁▁▂▁ |
+| max_players    |         0 |             1 |     5.66 |    18.88 |    0.00 |    4.00 |     4.00 |      6.00 |    999 | ▇▁▁▁▁ |
+| max_playtime   |         0 |             1 |    91.34 |   659.75 |    0.00 |   30.00 |    45.00 |     90.00 |  60000 | ▇▁▁▁▁ |
+| min_age        |         0 |             1 |     9.71 |     3.45 |    0.00 |    8.00 |    10.00 |     12.00 |     42 | ▅▇▁▁▁ |
+| min_players    |         0 |             1 |     2.07 |     0.66 |    0.00 |    2.00 |     2.00 |      2.00 |      9 | ▁▇▁▁▁ |
+| min_playtime   |         0 |             1 |    80.88 |   637.87 |    0.00 |   25.00 |    45.00 |     90.00 |  60000 | ▇▁▁▁▁ |
+| playing_time   |         0 |             1 |    91.34 |   659.75 |    0.00 |   30.00 |    45.00 |     90.00 |  60000 | ▇▁▁▁▁ |
+| year_published |         0 |             1 |  2003.07 |    12.28 | 1950.00 | 1998.00 |  2007.00 |   2012.00 |   2016 | ▁▁▁▂▇ |
+| average_rating |         0 |             1 |     6.37 |     0.85 |    1.38 |    5.83 |     6.39 |      6.94 |      9 | ▁▁▃▇▁ |
+| users_rated    |         0 |             1 |   870.08 |  2880.21 |   50.00 |   85.00 |   176.00 |    518.00 |  67655 | ▇▁▁▁▁ |
 
 ## 3. Data analysis plan
 
@@ -108,15 +131,106 @@ board_games %>%
   group_by(year_published) %>% 
   summarize(mean_rating = mean(average_rating)) %>% 
   ggplot(aes(x = year_published, y = mean_rating)) +
-  geom_col()
+  geom_col() +
+    labs(title = "Median Rating of Games Over Time",
+       x = "Year Published", 
+       y = "Median Rating")
 ```
 
 ![](proposal_files/figure-gfm/year-average-rating-1.png)<!-- -->
 
-Very preliminary exploratory data analysis, including some summary
-statistics and visualizations, along with some explanation on how they
-help you learn more about your data. (You can add to these later as you
-work on your project.) The statistical method(s) that you believe will
-be useful in answering your question(s). (You can update these later as
-you work on your project.) What results from these specific statistical
-methods are needed to support your hypothesized answer?
+This visualization demonstrates that rating of games increases the later
+the games are created. We may want to investigate this more by creating
+other visualizations to determine the cause of this. Is it because games
+in a certain category are more popular and those games have only
+recently been created? What else can help explain the rising ratings?
+
+### Monopoly
+
+There are 72 versions of Monopoly within this data set. We’d like to
+look at this subset to see how they vary in popularity, both in terms of
+average rating and the number of ratings written for each.
+
+``` r
+board_games %>% 
+  filter(grepl("Monopoly", name))
+```
+
+    ## # A tibble: 72 × 22
+    ##    game_id description        image max_players max_playtime min_age min_players
+    ##      <dbl> <chr>              <chr>       <dbl>        <dbl>   <dbl>       <dbl>
+    ##  1     684 Rummy for Monopol… //cf…           6           30       8           2
+    ##  2    1298 Monopoly Star War… //cf…           8           90       8           2
+    ##  3    1420 Don't Go to Jail … //cf…           4           20       8           2
+    ##  4    1931 The &quot;Bust~th… //cf…           6          120       8           2
+    ##  5    1932 In this game the … //cf…           6          120       8           2
+    ##  6    2929 Monopoly with a d… //cf…           8           60       8           2
+    ##  7    3020 Forget Star Wars.… //cf…           8          180       8           2
+    ##  8    3065 Monopoly - Stock … //cf…           6          120       8           2
+    ##  9    3394 It's Monopoly wit… //cf…           6          120       8           2
+    ## 10    5029 A monopoly (from … //cf…           8          120       8           2
+    ## # … with 62 more rows, and 15 more variables: min_playtime <dbl>, name <chr>,
+    ## #   playing_time <dbl>, thumbnail <chr>, year_published <dbl>, artist <chr>,
+    ## #   category <chr>, compilation <chr>, designer <chr>, expansion <chr>,
+    ## #   family <chr>, mechanic <chr>, publisher <chr>, average_rating <dbl>,
+    ## #   users_rated <dbl>
+
+### Catan
+
+There are also a ton of versions of Catan!
+
+``` r
+board_games %>% 
+  filter(grepl("Catan", name))
+```
+
+    ## # A tibble: 24 × 22
+    ##    game_id description        image max_players max_playtime min_age min_players
+    ##      <dbl> <chr>              <chr>       <dbl>        <dbl>   <dbl>       <dbl>
+    ##  1      13 In Catan (formerl… //cf…           4          120      10           3
+    ##  2     278 Catan Card Game b… //cf…           2           90      10           2
+    ##  3    1897 The foray into sp… //cf…           4          120      12           3
+    ##  4    2338 Starship Catan is… //cf…           2           60      12           2
+    ##  5    3972 Settlers of Catan… //cf…           4           90      10           3
+    ##  6    5824 A simplified buil… //cf…           4           20       4           2
+    ##  7   22766 This limited 10th… //cf…           2           60      10           2
+    ##  8   24511 From the SimplyFu… //cf…           4           30      10           2
+    ##  9   25234 Catan Histories: … //cf…           4          120      10           3
+    ## 10   27710 Like all the othe… //cf…           4           15       7           1
+    ## # … with 14 more rows, and 15 more variables: min_playtime <dbl>, name <chr>,
+    ## #   playing_time <dbl>, thumbnail <chr>, year_published <dbl>, artist <chr>,
+    ## #   category <chr>, compilation <chr>, designer <chr>, expansion <chr>,
+    ## #   family <chr>, mechanic <chr>, publisher <chr>, average_rating <dbl>,
+    ## #   users_rated <dbl>
+
+### Game Categories
+
+We may break our data into smaller subsets based on the categories
+assigned to the games. It will be interesting to see the number in each
+group, but also how that impacts ratings and popularity.
+
+We are also curious about which categories frequently appear together,
+and might explore using a heatmap to see what overlaps are common.
+
+``` r
+board_games %>% 
+  separate_rows(category, sep = ",") %>% 
+  group_by(category) %>% 
+  summarize(number = n()) %>% 
+  arrange(desc(number))
+```
+
+    ## # A tibble: 84 × 2
+    ##    category          number
+    ##    <chr>              <int>
+    ##  1 Card Game           2981
+    ##  2 Wargame             2034
+    ##  3 Fantasy             1218
+    ##  4 Fighting             900
+    ##  5 Economic             878
+    ##  6 Science Fiction      850
+    ##  7 Dice                 838
+    ##  8 Party Game           833
+    ##  9 Abstract Strategy    710
+    ## 10 Children's Game      704
+    ## # … with 74 more rows

@@ -9,22 +9,23 @@ library(tidyverse)
 library(broom)
 library(pillar)
 library(ggplot2)
+library(skimr)
 ```
 
 ## 1. Introduction
 
 For our project, we will work with the TidyTuesday Board Games dataset from March 2019. This set was gathered from BoardGameGeek, a website with a database of over 90,000 board games with crowd-sourced reviews. TidyTuesday limited the set to only include games published between 1950 and 2016 with at least 50 ratings. Variables in this set include maximum and minimum numbers of players, the maximum playtime, whether the game has expansion packs, the publisher, and, most importantly, the average rating and number of users who rated it. 
 
-We are interested in how different characteristics of board games influence how they are perceived by players. This can be explored by looking at how the average rating varies with such variables as the number of players needed, the playing time, and when the game was published. 
+We are interested in how different characteristics of board games influence how they are perceived by players. This can be explored by looking at how the average rating varies with such variables as the number of players needed, the playing time, and when the game was published. The mechanic and category variables will also be useful to us in our research, but are vast and will need to be simplified to make meaningful connections. We may also want to review popularity based on game artists, locating the most popular ones. 
 
 ## 2. Data
 
 ```{r import-data}
-board_games <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-12/board_games.csv")
+board_games <- readr::read_csv("~/Desktop/w2022-project-gamesonyourphone/data/board_games.csv")
 ```
 
 ```{r glimpse}
-glimpse(board_games)
+skim(board_games)
 ```
 
 ## 3. Data analysis plan
@@ -44,11 +45,65 @@ board_games %>%
   group_by(year_published) %>% 
   summarize(mean_rating = mean(average_rating)) %>% 
   ggplot(aes(x = year_published, y = mean_rating)) +
-  geom_col()
+  geom_col() +
+    labs(title = "Median Rating of Games Over Time",
+       x = "Year Published", 
+       y = "Median Rating")
+```
+
+This visualization demonstrates that rating of games increases the later the games are created. We may want to investigate this more by creating other visualizations to determine the cause of this. Is it because games in a certain category are more popular and those games have only recently been created? What else can help explain the rising ratings? 
+
+### Monopoly
+
+There are 72 versions of Monopoly within this data set. We'd like to look at this subset to see how they vary in popularity, both in terms of average rating and the number of ratings written for each. 
+
+```{r monopoly}
+board_games %>% 
+  filter(grepl("Monopoly", name))
+```
+
+We can explore the characteristics of specifically Monopoly games. 
+
+```{r monopoly_statistics}
+board_games %>% 
+  filter(grepl("Monopoly", name)) %>% 
+  summarise(mean = mean(average_rating),
+            max = max(average_rating),
+            min = min(average_rating))
+```
+
+### Catan
+
+There are also a ton of versions of Catan!
+
+```{r catan} 
+board_games %>% 
+  filter(grepl("Catan", name)) 
+```
+
+We can explore the characteristics of specifically Catan games. 
+
+```{r catan_statistics}
+board_games %>% 
+  filter(grepl("Catan", name)) %>% 
+  summarise(mean = mean(average_rating),
+            max = max(average_rating),
+            min = min(average_rating))
 ```
 
 
-Very preliminary exploratory data analysis, including some summary statistics and visualizations, along with some explanation on how they help you learn more about your data. (You can add to these later as you work on your project.)
-The statistical method(s) that you believe will be useful in answering your question(s). (You can update these later as you work on your project.)
-What results from these specific statistical methods are needed to support your hypothesized answer?
+### Game Categories
+
+We may break our data into smaller subsets based on the categories assigned to the games. It will be interesting to see the number in each group, but also how that impacts ratings and popularity. 
+
+We are also curious about which categories frequently appear together, and might explore using a heatmap to see what overlaps are common. 
+
+```{r game-categories}
+board_games %>% 
+  separate_rows(category, sep = ",") %>% 
+  group_by(category) %>% 
+  summarize(number = n()) %>% 
+  arrange(desc(number))
+```
+
 
