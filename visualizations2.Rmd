@@ -7,8 +7,9 @@ output: html_document
 
 
 ```{r heatmap}
-cat_counts %>% 
-  ggplot() +
-  geom_tile(aes(x = category1, y = category2, fill = n))
+map_counts %>% 
+  ggplot(aes(x = category2, y = category1, fill = n)) +
+  geom_tile()
 ```
 
+ 
