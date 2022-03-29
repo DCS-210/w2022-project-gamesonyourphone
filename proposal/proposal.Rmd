@@ -100,10 +100,17 @@ We are also curious about which categories frequently appear together, and might
 
 ```{r game-categories}
 board_games %>% 
-  separate_rows(category, sep = ",") %>% 
-  group_by(category) %>% 
-  summarize(number = n()) %>% 
-  arrange(desc(number))
+  separate_rows(mechanic, sep = ",") %>% 
+  group_by(mechanic) %>% 
+  summarize(average_rating) %>% 
+  arrange(desc(average_rating))
 ```
 
+```{r}
+board_games %>% 
+  separate_rows(category, sep = ",") %>% 
+  group_by(category) %>% 
+  summarize(average_rating) %>% 
+  arrange(desc(average_rating))
+```
 
