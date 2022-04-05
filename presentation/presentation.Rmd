@@ -22,6 +22,8 @@ library(tidymodels)
 library(palmerpenguins)
 library(knitr)
 library(xaringanthemer)
+install.packages("readxl")
+library("readxl")
 ```
 
 ```{r setup, include=FALSE}
@@ -29,8 +31,9 @@ library(xaringanthemer)
 knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618, out.width = "80%")
 ```
 
-```{r load-data, include=FALSE}
-# Load your data here
+```{r importing-class-data, include=FALSE}
+library("readxl")
+read_excel("C:\\Users\\finnconway\\Desktop\\Gamesonyourphone?.xlsx")
 ```
 
 ```{r}
