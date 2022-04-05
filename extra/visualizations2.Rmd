@@ -28,3 +28,48 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+#board_games%>%
+#  arrange(desc(max_playtime))
+
+board_games <- board_games %>%
+  mutate(
+    playtime_group = case_when(
+      playing_time < 1 ~ "N/A",
+      playing_time >= 1 & playing_time <= 20 ~ "Under 20 minutes",
+      playing_time >= 21 & playing_time <= 40 ~ "20-40 minutes",
+      playing_time >= 41 & playing_time <= 60 ~ "40-60 minutes",
+      playing_time >= 61 & playing_time <= 120 ~ "1-2 hours",
+      playing_time >= 121 & playing_time <= 180 ~ "2-3 hours",
+      playing_time >= 181 & playing_time <= 240 ~ "3-4 hours",
+      playing_time >= 241 & playing_time <= 360 ~ "4-6 hours",
+      playing_time >= 361 ~ "Over 6 hours"
+    ))
+```
+
+```{r}
+board_games%>%
+  count(playtime_group)%>%
+  arrange(desc(n))
+```
+
+
+#```{r}
+board_games%>%
+  filter(playing_time < 1000)%>%
+  arrange(desc(playing_time))
+#```
+
+stacked barplot
+
+```{r}
+ggplot(data = board_games, aes(playing_time, fill=playtime_group)) +
+  geom_histogram() +
+  xlim(0,500)
+```
+```{r}
+board_games %>% 
+  ggplot(aes(x = playtime_group , y = average_rating, color = playtime_group)) +
+  geom_violin()
+```
