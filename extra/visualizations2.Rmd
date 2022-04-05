@@ -63,6 +63,7 @@ board_games%>%
 
 stacked barplot
 
+
 ```{r}
 ggplot(data = board_games, aes(playing_time, fill=playtime_group)) +
   geom_histogram() +
