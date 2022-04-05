@@ -54,17 +54,22 @@ board_games%>%
   arrange(desc(n))
 ```
 
+
+#```{r}
+board_games%>%
+  filter(playing_time < 1000)%>%
+  arrange(desc(playing_time))
+#```
+
+stacked barplot
+
 ```{r}
-ggplot(data = board_games, x = playtime_group, color=)
+ggplot(data = board_games, aes(playing_time, fill=playtime_group)) +
+  geom_histogram() +
+  xlim(0,500)
 ```
-
-
-
-
 ```{r}
 board_games %>% 
-  filter(playing_time < 1200) %>% 
-  ggplot(aes(x = playing_time , y = average_rating)) +
-  geom_point(position = "jitter") +
-  geom_smooth(method = "lm") 
+  ggplot(aes(x = playtime_group , y = average_rating, color = playtime_group)) +
+  geom_violin()
 ```
