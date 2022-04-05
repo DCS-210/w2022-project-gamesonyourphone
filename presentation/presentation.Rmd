@@ -1,7 +1,7 @@
 ---
-title: "Presentation title"
-subtitle: "Presentation subtitle (if any)"
-author: "Team name <br> Names of team members"
+title: "Board Games"
+subtitle: "There are more of them than you'd think!"
+author: "Gamesonyourphone? <br> Grace Acton, Finn Conway, and Jackson Donahue"
 institute: "Bates College"
 date: "`r Sys.Date()`"
 output:
@@ -36,22 +36,24 @@ library("readxl")
 read_excel("C:\\Users\\finnconway\\Desktop\\Gamesonyourphone?.xlsx")
 ```
 
-```{r}
-style_xaringan(
-  title_slide_background_image = "img/confetti.jpg"
-)
+```{r style, echo=FALSE}
+style_solarized_dark()
 ```
 
 
-class: center, middle
+class: center, top
 
-## A statement of the overall goal / research question
+## Goals and Questions
+
+- How do factors like playtime, game mechanics, and game categories impact the popularity of board games?
+- What categories do games fit into, and how do they overlap?
+- How have games changed over time, and how are older games perceived now?
 
 ---
 
 class: inverse, center, middle
 
-# Section title
+# Our Data
 
 ---
 
