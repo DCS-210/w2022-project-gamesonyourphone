@@ -4,7 +4,7 @@ author: "Grace2"
 date: '2022-03-17'
 output: html_document 
 ---
-
+ 
 
 ```{r heatmap}
 colors <- c("#ffffff", "#f2f0f7", "#cbc9e2", "#9e9ac8", "#756bb1", "#54278f")
