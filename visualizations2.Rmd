@@ -7,9 +7,12 @@ output: html_document
 
 
 ```{r heatmap}
+colors <- c("#ffffff", "#f2f0f7", "#cbc9e2", "#9e9ac8", "#756bb1", "#54278f")
+
 map_counts %>% 
   ggplot(aes(x = category2, y = category1, fill = n)) +
-  geom_tile()
+  geom_tile() +
+  scale_fill_stepsn(colors = colors, values = c(0, 0.01, 0.1, 0.25, 0.6, 1))
 ```
 
  
