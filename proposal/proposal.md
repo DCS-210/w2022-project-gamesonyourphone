@@ -137,7 +137,7 @@ board_games %>%
        y = "Median Rating")
 ```
 
-![](proposal_files/figure-gfm/year-average-rating-1.png)<!-- -->
+![](proposal_files/figure-gfm/year-average-rating-1.png)<!-- --> 
 
 This visualization demonstrates that rating of games increases the later
 the games are created. We may want to investigate this more by creating
