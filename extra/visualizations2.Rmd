@@ -64,7 +64,7 @@ board_games%>%
 stacked barplot
  
 
-```{r}
+```{r, fig.alt= "In this graph, we have a histogram displaying the frequency of games in each group of playing times. It reveals that most games are under an hour, with a fairly even split between the groups of 0-20 minutes and 20-40. The 40-60 group has the most number of games. Beyond that, there are a few spikes around convenient time labels such as 2 hours, 3 hours etc, but the vast majority of games lie in this under an hour range.  }
 ggplot(data = board_games, aes(playing_time, fill=playtime_group)) +
   geom_histogram() +
   xlim(0,500)
@@ -74,6 +74,10 @@ board_games %>%
   ggplot(aes(x = playtime_group , y = average_rating, color = playtime_group)) +
   geom_violin()
 ```
+
+Research questions: Does this change with recommended ages? 
+Does this change with different game categories?
+
 
 ## Heatmap 
 ```{r heatmap}
