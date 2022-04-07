@@ -6,9 +6,9 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-library(readxl)
-Gamesonyourphone_ <- read_excel("extra/Gamesonyourphone?.xlsx")
-View(Gamesonyourphone_) 
+#library(readxl)
+#Gamesonyourphone_ <- read_excel("extra/Gamesonyourphone?.xlsx")
+#View(Gamesonyourphone_) 
 ```
 
 ## R Markdown
