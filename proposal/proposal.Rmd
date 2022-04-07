@@ -98,19 +98,23 @@ We may break our data into smaller subsets based on the categories assigned to t
 
 We are also curious about which categories frequently appear together, and might explore using a heatmap to see what overlaps are common. 
 
-```{r game-categories}
+```{r game-mechanic-rating}
 board_games %>% 
   separate_rows(mechanic, sep = ",") %>% 
   group_by(mechanic) %>% 
-  summarize(average_rating) %>% 
-  arrange(desc(average_rating))
+  summarize(median = median(average_rating),
+            count = n()) %>% 
+  filter(count > 750) %>%
+  arrange(desc(median), desc(count))
 ```
 
-```{r}
+```{r game-category-rating}
 board_games %>% 
   separate_rows(category, sep = ",") %>% 
   group_by(category) %>% 
-  summarize(average_rating) %>% 
-  arrange(desc(average_rating))
+  summarize(median = median(average_rating),
+            count = n()) %>% 
+  filter(count > 750) %>%
+  arrange(desc(median), desc(count))
 ```
 

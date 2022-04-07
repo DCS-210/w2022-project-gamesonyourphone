@@ -22,6 +22,16 @@ make is about the code itself. Your results with proper output and
 graphics go in your presentation, this space is for a brief summary of
 your project.
 
+
+
+### Categories (Grace)
+
+
+  The BoardGameGeek dataset provides a category variable, which defines games by their themes. Most games have more than one theme, however, and this variable can sometimes reflect game mechanics more than thematic categories. Popular categories include broad descriptions like "Card Game" and "Abstract Strategy", as well as more specific groups like "Aviation / FLight", "American Civil War", and "Bluffing". 
+  Because most games fit into multiple categories, we can explore which categories tend to overlap. Unsurprisingly, specific war-related categories, such as "World War II", "Napoleonic", "Modern Warfare", and "American Civil War" tend to coincide with "Wargame". The single most popular two-category descriptor is "Wargame" and "World War II". 
+  The category tags can also provide insight into how game mechanics are applied to themes. "Card Game" is the single most common category, and has many secondary categories that it coincides with: "Fantasy", "Collectible Components", "Bluffing", "Animals", and "Humor" being the most popular. Each of these, when paired with "Card Game", describes at least 100 games. "Dice" most commonly appears with "Fantasy" and "Fighting", and "Bluffing" is most often with "Card Game" and "Deduction". 
+  "Children's Game" is also a category of note. Based on category overlaps, children's games are most frequently based on "Dice", "Deduction", and "Memory". Thinking about the goal of children's games, this makes sense - they are frequently educational, and can teach skills like math and logical reasoning while improving memory. 
+  
 ## Presentation
 
 Our presentation can be found [here](presentation/presentation.html).
