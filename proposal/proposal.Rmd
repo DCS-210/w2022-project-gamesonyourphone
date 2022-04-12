@@ -105,7 +105,7 @@ board_games %>%
   summarize(median = median(average_rating),
             count = n()) %>% 
   filter(count > 750) %>%
-  arrange(desc(median), desc(count))
+  arrange(desc(median), desc(count), )
 ```
 
 

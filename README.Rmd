@@ -26,6 +26,10 @@ You can also load your data here and present any analysis results / plots, but I
 And make sure to hide your code with  `echo = FALSE` unless the point you are trying to make is about the code itself.
 Your results with proper output and graphics go in your presentation, this space is for a brief summary of your project.
 
+## Mechanics (Finn)
+
+  Each game included in the BoardGameGeek dataset is broken down by their game mechanics. Game mechanics refer to a specific element of play within a game that form the structure which the game can be played around. Area influence for example, a popular game mechanic, is based off the idea that spaces on the board have value to a player. Many of the games in the dataset had two or more game mechanics associated with them. Individually, dice rolling and hand management were by far the most common game mechanics in the dataset, appearing over 2000 times. This makes sense as they make up some of the most important actions in many kinds of games. Were they the most popular game mechanics though? After sorting game mechanics for at least 750 appearances, Area influence and variable player power games were rated the highest. Both of these game mechanics came back with average ratings above 6.8/10. These game mechanics represents some incredibly popular games like Pandemic, scoring 8.6/10 and Scyth, scoring 8.6/10. During this project a class survey was distributed to find out how the dataset compared to preferences of our classmates. Area control was also the most chosen game mechanic by the class, representing 33% of all responses. Dice rolling and card drafting followed closely behind each making up 20% of responses respectively. Although these game mechanics did receive high ratings in the larger data set, that could be explained by their pervasiveness. Certainly many of the most popular games include these game mechanics, but games with much lower ratings diluted games with higher ratings. 
+
 ```{r load-data, echo = FALSE}
 # load data here, if you like
 ```
