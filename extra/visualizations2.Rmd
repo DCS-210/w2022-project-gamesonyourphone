@@ -156,3 +156,30 @@ heatmap <- map_counts %>%
   geom_tile() +
   scale_fill_stepsn(colors = colors, values = c(0, 0.01, 0.1, 0.25, 0.6, 1))
 ```
+
+# Game Mechanics
+```{r mechanic-prop-class}
+Gamesonyourphone_ %>% 
+  group_by(game_mechanic_pop) %>% 
+  filter(!is.na(game_mechanic_pop)) %>% 
+  summarize(count = n())%>% 
+  arrange(desc(count)) %>% 
+  mutate(proportion = (count/15)*100)
+```
+
+```{r}
+Gamesonyourphone_ %>% 
+  group_by(game_mechanic_pop) %>% 
+  filter(!is.na(game_mechanic_pop)) %>% 
+  mutate(count = n(),
+         proportion = (count/15)*100) %>% 
+ggplot(mapping = aes(x = "", y = reorder(game_mechanic_pop, -proportion), fill = proportion, color = proportion)) +
+    geom_bar(stat = "identity") +
+    coord_polar(theta = "y", start = 0)+
+    labs(
+      title = "Bike rentals in DC",
+      subtitle = "by season",
+      x = "Season",
+      y = "Number of bikes rented") 
+```
+

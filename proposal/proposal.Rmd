@@ -108,6 +108,17 @@ board_games %>%
   arrange(desc(median), desc(count))
 ```
 
+
+```{r category-prop-class}
+Gamesonyourphone_ %>% 
+  group_by(game_category_pop) %>% 
+  filter(!is.na(game_category_pop)) %>% 
+  summarize(count = n())%>% 
+  arrange(desc(count)) %>% 
+  mutate(proportion = (count/15)*100)
+```
+
+
 ```{r game-category-rating}
 board_games %>% 
   separate_rows(category, sep = ",") %>% 
