@@ -14,7 +14,7 @@ using two different algorithms, but the results should be similar and as
 long as you’re in the ballpark of 750 words, you’re good! The addin will
 ignore code chunks and only count the words in prose.
 
-## Categories (Grace)
+### Categories (Grace)
 
 The BoardGameGeek dataset provides a category variable, which defines
 games by their themes. Most games have more than one theme, however, and
@@ -48,7 +48,7 @@ make is about the code itself. Your results with proper output and
 graphics go in your presentation, this space is for a brief summary of
 your project.
 
-## Mechanics (Finn)
+### Mechanics (Finn)
 
 Each game included in the BoardGameGeek dataset is broken down by their
 game mechanics. Game mechanics refer to a specific element of play
@@ -74,6 +74,10 @@ ratings in the larger data set, that could be explained by their
 pervasiveness. Certainly many of the most popular games include these
 game mechanics, but games with much lower ratings diluted games with
 higher ratings.
+
+### Playtime (Jackson)
+
+What kind of relationships can we observe and analyze between playtime, age group, rating, and other variables in our dataset? To answer these questions, we created a variety of visualizations mainly based on a mutated variable we call "Playtime_group". This separates the playing time of each game into a few categories: Under 20 minutes, 20-40 minutes, 40-60 minutes, 1-2 hours, 2-3 hours, 4-6 hours, and above 6 hours. Did you know there are some games that are supposed to take 20+ years to fully complete? Although we removed it from our dataset for visual purposes, we were taken aback by "The Conquest for Northern Africa" and its immense playtime. To do all this, we used a mutate and case_when function to create our groups, and we left out any game that had a playtime of more than 1000 minutes with a filter function when we created the histogram that would show us exactly what the relationship is between our variables. This led us to create a barplot, violin plot, and a few more visualizations which we are still deciding whether or not to keep in the presentation. The possibilities are endless when you have so many interesting variables to consider and compare, so the final steps of this part of the project will be narrowing it down to just three ways of visualizing the relationship between playtime group and rating, age, and game category. 
 
 ## Presentation
 
