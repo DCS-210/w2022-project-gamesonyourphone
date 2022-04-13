@@ -14,6 +14,9 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 ---
+```{r import-board-games, include=FALSE, echo=FALSE}
+board_games <- readr::read_csv("/cloud/project/data/board_games.csv")
+```
 
 ```{r load-packages, include = FALSE}
 # Add any additional packages you need to this chunk
@@ -24,6 +27,7 @@ library(knitr)
 library(xaringanthemer)
 install.packages("readxl")
 library(readxl)
+source("/cloud/project/extra/HeatMap_Prep.R")
 ```
 
 ```{r setup, include=FALSE}
@@ -40,7 +44,7 @@ read_excel("/cloud/project/extra/Gamesonyourphone?.xlsx")
 style_solarized_dark()
 ```
 
-
+---
 class: center, top
 
 ## Goals and Questions
@@ -79,6 +83,40 @@ class: top, center
 
 ## What's in this set?
 
+--
+```{r glimpse-set, echo=FALSE}
+glimpse(board_games)
+```
+---
+class: top, center
+
+## What's in this set?
+
+--
+### A lot.
+
+--
+.pull-left[
+
+- Name
+- Description
+- Image
+- Designer
+- Family
+- Publisher
+- Game mechanic
+- Category
+]
+
+--
+.pull-right[
+- Minimum/maximum playtime
+- Minimum age
+- Minimum/maximum players
+- Year published
+- Number of ratings
+- **Average rating**
+]
 
 ---
 class: inverse, center, middle
@@ -108,12 +146,62 @@ class: inverse, center, middle
 ---
 class: top, center
 
-# GRACE'S SLIDE
+## What categories are used?
+```{r categories, echo=FALSE, include=FALSE}
+categories <- board_games %>% 
+  select(category) %>% 
+  separate(category, into = c("category1", "category2", "category3", "category4"), sep = ",")
+```
+--
+.pull-left[
+
+### Primary Categories
+
+```{r top-categories1, echo=FALSE}
+categories %>% 
+  group_by(category1) %>% 
+  count() %>% 
+  arrange(desc(n))
+```
+]
+
+--
+.pull-right[
+
+### Secondary Categories
+
+```{r top-categories2, echo=FALSE}
+categories %>% 
+  group_by(category2) %>% 
+  count() %>% 
+  arrange(desc(n))
+```
+]
 
 ---
 class: top, center
 
-# GRACE'S SLIDE
+## How do they overlap?
+
+```{r heatmap, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%'}
+colors <- c("#ffffb2", "#fed976", "#feb24c", "#fd8d3c", "#f03b20", "#bd0026")
+
+map_counts %>% 
+  ggplot(aes(x = category2, y = category1, fill = n)) +
+  geom_tile() +
+  labs(title = "Heatmap of Category Overlaps",
+       x = "Category 2",
+       y = "Category 1",
+       fill = "Number of Overlaps") +
+  theme_xaringan() +
+  theme(title = element_text(size = 15),
+        axis.title = element_blank(),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 90),
+        legend.title = element_text(size = 12),
+        legend.text = element_text(size = 10)) +
+  scale_fill_stepsn(colors = colors, values = c(0, 0.01, 0.1, 0.25, 0.6, 1))
+```
 
 ---
 class: inverse, center, middle

@@ -30,6 +30,7 @@ class: center, middle, inverse, title-slide
 
 
 
+---
 class: center, top
 
 ## Goals and Questions
@@ -66,6 +67,64 @@ class: top, center
 
 ## What's in this set?
 
+--
+
+```
+## Rows: 10,532
+## Columns: 22
+## $ game_id        &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, …
+## $ description    &lt;chr&gt; "Die Macher is a game about seven sequential political …
+## $ image          &lt;chr&gt; "//cf.geekdo-images.com/images/pic159509.jpg", "//cf.ge…
+## $ max_players    &lt;dbl&gt; 5, 4, 4, 4, 6, 6, 2, 5, 4, 6, 7, 5, 4, 4, 6, 4, 2, 8, 4…
+## $ max_playtime   &lt;dbl&gt; 240, 30, 60, 60, 90, 240, 20, 120, 90, 60, 45, 60, 120,…
+## $ min_age        &lt;dbl&gt; 14, 12, 10, 12, 12, 12, 8, 12, 13, 10, 13, 12, 10, 10, …
+## $ min_players    &lt;dbl&gt; 3, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 3, 3, 2, 3, 2, 2, 2…
+## $ min_playtime   &lt;dbl&gt; 240, 30, 30, 60, 90, 240, 20, 120, 90, 60, 45, 45, 60, …
+## $ name           &lt;chr&gt; "Die Macher", "Dragonmaster", "Samurai", "Tal der König…
+## $ playing_time   &lt;dbl&gt; 240, 30, 60, 60, 90, 240, 20, 120, 90, 60, 45, 60, 120,…
+## $ thumbnail      &lt;chr&gt; "//cf.geekdo-images.com/images/pic159509_t.jpg", "//cf.…
+## $ year_published &lt;dbl&gt; 1986, 1981, 1998, 1992, 1964, 1989, 1978, 1993, 1998, 1…
+## $ artist         &lt;chr&gt; "Marcus Gschwendtner", "Bob Pepper", "Franz Vohwinkel",…
+## $ category       &lt;chr&gt; "Economic,Negotiation,Political", "Card Game,Fantasy", …
+## $ compilation    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "CATAN …
+## $ designer       &lt;chr&gt; "Karl-Heinz Schmiel", "G. W. \"Jerry\" D'Arcey", "Reine…
+## $ expansion      &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, "Elfengold,Elfenlan…
+## $ family         &lt;chr&gt; "Country: Germany,Valley Games Classic Line", "Animals:…
+## $ mechanic       &lt;chr&gt; "Area Control / Area Influence,Auction/Bidding,Dice Rol…
+## $ publisher      &lt;chr&gt; "Hans im Glück Verlags-GmbH,Moskito Spiele,Valley Games…
+## $ average_rating &lt;dbl&gt; 7.66508, 6.60815, 7.44119, 6.60675, 7.35830, 6.52534, 6…
+## $ users_rated    &lt;dbl&gt; 4498, 478, 12019, 314, 15195, 73, 2751, 186, 1263, 6729…
+```
+---
+class: top, center
+
+## What's in this set?
+
+--
+### A lot.
+
+--
+.pull-left[
+
+- Name
+- Description
+- Image
+- Designer
+- Family
+- Publisher
+- Game mechanic
+- Category
+]
+
+--
+.pull-right[
+- Minimum/maximum playtime
+- Minimum age
+- Minimum/maximum players
+- Year published
+- Number of ratings
+- **Average rating**
+]
 
 ---
 class: inverse, center, middle
@@ -95,12 +154,64 @@ class: inverse, center, middle
 ---
 class: top, center
 
-# GRACE'S SLIDE
+## What categories are used?
+
+--
+.pull-left[
+
+### Primary Categories
+
+
+```
+## # A tibble: 84 × 2
+## # Groups:   category1 [84]
+##    category1              n
+##    &lt;chr&gt;              &lt;int&gt;
+##  1 Card Game           2143
+##  2 Abstract Strategy    710
+##  3 Wargame              543
+##  4 Economic             542
+##  5 Adventure            527
+##  6 Bluffing             514
+##  7 Action / Dexterity   492
+##  8 Animals              436
+##  9 Dice                 394
+## 10 Ancient              374
+## # … with 74 more rows
+```
+]
+
+--
+.pull-right[
+
+### Secondary Categories
+
+
+```
+## # A tibble: 83 × 2
+## # Groups:   category2 [83]
+##    category2           n
+##    &lt;chr&gt;           &lt;int&gt;
+##  1 &lt;NA&gt;             2007
+##  2 Wargame           803
+##  3 Card Game         738
+##  4 Fantasy           531
+##  5 World War II      465
+##  6 Children's Game   335
+##  7 Dice              294
+##  8 Fighting          282
+##  9 Economic          238
+## 10 Science Fiction   237
+## # … with 73 more rows
+```
+]
 
 ---
 class: top, center
 
-# GRACE'S SLIDE
+## How do they overlap?
+
+&lt;img src="presentation_files/figure-html/heatmap-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 class: inverse, center, middle
