@@ -167,19 +167,72 @@ Gamesonyourphone_ %>%
   mutate(proportion = (count/15)*100)
 ```
 
-```{r}
-Gamesonyourphone_ %>% 
-  group_by(game_mechanic_pop) %>% 
-  filter(!is.na(game_mechanic_pop)) %>% 
-  mutate(count = n(),
-         proportion = (count/15)*100) %>% 
-ggplot(mapping = aes(x = "", y = reorder(game_mechanic_pop, -proportion), fill = proportion, color = proportion)) +
-    geom_bar(stat = "identity") +
-    coord_polar(theta = "y", start = 0)+
+```{r game_mechanic_pie, alt.text = "Pie chart showing the distrobution of game mechanics perfered by DCS 210, broken down by proportion. The most prefered game mechnic was Area Control makig up 33.3 percent of responses. Dice rolling and card drafting were the next more popular, with 20 percent of the class perfering those mechanics."} 
+prop_pie <- data.frame (
+  mechanics = c("Area Control", "Dice Rolling", "Card Drafting", "Modular Board", "Hex and Counter", "Hand Management"),
+  proportion = c(33.3, 20.0, 20.0, 13.3, 6.6, 6.6))
+  
+ggplot(data = prop_pie, mapping = aes(x = "", y = proportion, fill = mechanics)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    coord_polar(theta = "y", start = 0) + 
+    geom_text(aes(label = paste0(proportion, "%")),
+              position = position_stack(vjust = 0.5)) + 
+   scale_fill_manual(values = c("#D73027", "#FC8D59",
+                               "#FEE090", "#E0F3F8", "91BfDB", "4575B4")) +
     labs(
-      title = "Bike rentals in DC",
-      subtitle = "by season",
-      x = "Season",
-      y = "Number of bikes rented") 
+      title = "Proportion of Preferred Game Mechanics",
+      subtitle = "from surveyed students in DCS 210",
+      x = "",
+      y = "")
+```
+```{r game_mechanic_pie, alt.text = "Pie chart showing the distrobution of game mechanics perfered by DCS 210, broken down by proportion. The most prefered game mechnic was Area Control makig up 33.3 percent of responses. Dice rolling and card drafting were the next more popular, with 20 percent of the class perfering those mechanics."} 
+prop_pie_cat <- data.frame (
+  categories = c("Card", "War Game", "Fantasy", "Economic", "Fighting", "Science Fiction", "Dice"),
+  cat_proportion = c(33.3, 33.3, 13.3, 6.6, 6.6, 6.6, 6.6))
+  
+ggplot(data = prop_pie_cat, mapping = aes(x = "", y = cat_proportion, fill = categories)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    coord_polar(theta = "y", start = 0) + 
+    geom_text(aes(label = paste0(cat_proportion, "%")),
+              position = position_stack(vjust = 0.5)) + 
+   scale_fill_manual(values = c("#D73027", "#FC8D59",
+                               "#FEE090", "#FFFFBF", "#E0F3F8", "91BfDB", "4575B4")) +
+    labs(
+      title = "Proportion of Preferred Game Categories",
+      subtitle = "from surveyed students in DCS 210",
+      x = "",
+      y = "")
 ```
 
+
+```{r game_mechanic_pop_bar alt.text = ""}
+board_games %>%
+  separate_rows(mechanic, sep = ",") %>% 
+  group_by(mechanic) %>% 
+  subset(mechanic %in% c("Area Control / Area Influence", 
+                         "Variable Player Powers", 
+                         "Card Drafting", 
+                         "Hex-and-Counter", 
+                         "Modular Board", 
+                         "Dice Rolling",
+                         "Hand Management",
+                         "Tile Placement",
+                         "Set Collection")) %>% 
+  mutate(count = n(), adjusted_rating = average_rating/count) %>% 
+  mutate(median = median(adjusted_rating)) %>% 
+  ggplot(aes(x = median, y = mechanic, color = mechanic, fill = mechanic)) +
+  geom_col()
+  #facet_grid(mechanic ~ average_rating)
+```
+
+```{r game_mechanic_pop_bar alt.text = ""}
+board_games %>%
+  separate_rows(mechanic, sep = ",") %>% 
+  group_by(mechanic) %>% 
+  subset(mechanic %in% c("Area Control / Area Influence")) %>% 
+  mutate(median = median(average_rating)) %>% 
+  mutate(count = n(), adjusted_rating = average_rating/count) %>% 
+  ggplot(aes(y = adjusted_rating, x = mechanic, color = mechanic, fill = mechanic)) +
+  geom_col() +
+  facet_wrap( ~ playtime_group)
+```
