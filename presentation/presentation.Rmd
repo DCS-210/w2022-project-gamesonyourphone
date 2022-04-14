@@ -305,8 +305,26 @@ class: center, top
 
 ## What categories do we enjoy?
 
-```{r cat-pie-chart, echo=FALSE}
-
+``` {r cat-pie-chart, echo=FALSE, alt.text = "Pie chart showing the distrobution of game mechanics preferred by DCS 210, broken down by proportion. The most preferred game mechanic was Area Control makig up 33.3 percent of responses. Dice rolling and card drafting were the next more popular, with 20 percent of the class preferred those mechanics."} 
+prop_pie_cat <- data.frame (
+  categories = c("Card", "War Game", "Fantasy", "Economic", "Fighting", "Science Fiction", "Dice"),
+  cat_proportion = c(33.3, 33.3, 13.3, 6.6, 6.6, 6.6, 6.6))
+  
+ggplot(data = prop_pie_cat, mapping = aes(x = "", y = cat_proportion, fill = categories)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    coord_polar(theta = "y", start = 0) + 
+    geom_text(aes(label = paste0(cat_proportion, "%", categories)),
+              position = position_stack(vjust = 0.5)) + 
+    scale_fill_manual(values = c("#D73027", "#FC8D59",
+                               "#FEE090", "#FFFFBF", "#E0F3F8", "91BfDB", "4575B4")) +
+    theme(axis.text = element_blank(),
+          axis.ticks = element_blank(),
+          panel.grid  = element_blank()) +
+    labs(
+      title = "Proportion of Preferred Game Categories",
+      subtitle = "from surveyed students in DCS 210",
+      x = "",
+      y = "")
 ```
 ---
 class: inverse, center, middle
@@ -316,7 +334,12 @@ class: inverse, center, middle
 ---
 class: top, center
 
-## 
+## What is a game mechanic?
+
+---
+class: top, center
+
+## What are the highest rated game mechnics?
 
 ```{r game_mechanic_pop_bar, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%', alt.text = "A bar chart showing how the median rating of board game by game mechanic. On average the most well rated game mechanic was area control scoring a median rating of 6.83/10. Variable player powers was next highest rated at 6.82/10. Set collection and tile placement came last, both averaging a score of 6.5."}
 
@@ -339,8 +362,14 @@ median_rating_mechanic <- data.frame (
 ---
 class: top, center
 
-# FINN'S SLIDE
-
+# What are the most common game mechanics?
+``` {r count_game_mechanic, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%', alt.text = "."}
+board_games %>% 
+  separate_rows(mechanic, sep = ",") %>% 
+  group_by(mechanic) %>% 
+  summarize(count = n()) %>% 
+  arrange(desc(count))
+```
 ---
 class: top, center
 
