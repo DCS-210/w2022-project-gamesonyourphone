@@ -189,7 +189,7 @@ class: top, center, inverse
 
 ## Rating of Games by Playtime
 
-```{r violin-plot, echo = F, warning = F, message = F, fig.alt = "", out.width = "70%", out.height= "70%", fig.align='center'}
+```{r violin-plot, echo = F, warning = F, message = F, fig.alt = "This violin plot shows a violin shape corresponding to each group of playing times. The average of each group is represented as the widest part of the violin, while the tails represent the spread of the data. It seems that longer playing games tend to have higher ratings and shorter spreads, so most people enjoyed these games, while shorter playtimes had more variety.", out.width = "70%", out.height= "70%", fig.align='center'}
 board_games %>% 
   
 ggplot(aes(x = playtime_group , y = average_rating, fill= factor(playtime_group, 
@@ -222,7 +222,7 @@ class: top, center, middle
 
 ## Number of Ratings vs Rating of Game
 ### By Year Published
-```{r best-boardgame, echo = F, warning = F, message = F, fig.alt = "", out.width = "80%", out.height= "70%", fig.align = 'center'}
+```{r best-boardgame, echo = F, warning = F, message = F, fig.alt = "This scatterplot shows a dot representing each game in the dataset under 100 minutes long. It then plots these points based on average rating and users rated, and includes a color scale that shows hwo long each game was from 0-100 miniutes. We found that most points are generally higher rated and the more users rating the game, generally means it will have a higher average rating.", out.width = "80%", out.height= "70%", fig.align = 'center'}
 
 colors <- c("#ffffb2", "#fed976", "#feb24c", "#fd8d3c", "#f03b20", "#bd0026")
 
