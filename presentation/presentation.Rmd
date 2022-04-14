@@ -300,7 +300,14 @@ map_counts %>%
   theme(axis.text.x = element_text(angle = 90)) +
   scale_fill_stepsn(colors = colors)
 ```
+---
+class: center, top
 
+## What categories do we enjoy?
+
+```{r cat-pie-chart, echo=FALSE}
+
+```
 ---
 class: inverse, center, middle
 
@@ -309,7 +316,8 @@ class: inverse, center, middle
 ---
 class: top, center
 
-# FINN'S SLIDE
+## 
+
 ```{r game_mechanic_pop_bar, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%', alt.text = "A bar chart showing how the median rating of board game by game mechanic. On average the most well rated game mechanic was area control scoring a median rating of 6.83/10. Variable player powers was next highest rated at 6.82/10. Set collection and tile placement came last, both averaging a score of 6.5."}
 
 median_rating_mechanic <- data.frame (
@@ -324,7 +332,9 @@ median_rating_mechanic <- data.frame (
       title = "Average Median Rating of Board Games",
       subtitle = "by game mechanic",
       x = "Median Rating",
-      y = "Game Mechanic") 
+      y = "Game Mechanic") +
+  theme_standard +
+  theme_xaringan()
 ```
 ---
 class: top, center
