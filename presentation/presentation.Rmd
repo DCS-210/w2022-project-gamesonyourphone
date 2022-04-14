@@ -87,6 +87,7 @@ class: top, center
 ```{r glimpse-set, echo=FALSE}
 glimpse(board_games)
 ```
+
 ---
 class: top, center
 
@@ -153,6 +154,7 @@ board_games <- board_games %>%
       playing_time >= 361 ~ "Over 6 hours"
     ))
 ``` 
+
 .center[
 ```{r bar-plot, warning = FALSE, echo = FALSE, message = FALSE, fig.alt= "In this graph, we have a histogram displaying the frequency of games in each group of playing times. It reveals that most games are under an hour, with a fairly even split between the groups of 0-20 minutes and 20-40. The 40-60 group has the most number of games. Beyond that, there are a few spikes around convenient time labels such as 2 hours, 3 hours etc, but the vast majority of games lie in this under an hour range.", out.width = "70%", out.height = "70%", fig.align='center' }
 barchart <- board_games %>%
@@ -214,6 +216,7 @@ ggplot(aes(x = playtime_group , y = average_rating, fill= factor(playtime_group,
   theme_xaringan() +
   theme_standard
 ```
+
 ---
 class: top, center, middle
 
@@ -300,6 +303,7 @@ map_counts %>%
   theme(axis.text.x = element_text(angle = 90)) +
   scale_fill_stepsn(colors = colors)
 ```
+
 ---
 class: center, top
 
