@@ -336,6 +336,24 @@ class: top, center
 
 ## What is a game mechanic?
 
+- A specific element of play within a game that forms the structure which the game can be played around.
+
+--
+
+- For Example
+
+--
+
+- Hand management is central to Apples to Apples. 
+
+--
+
+- Variable Player Powers are important in Scythe.
+
+--
+
+-Area Control is a mechanic in Risk. 
+
 ---
 class: top, center
 
@@ -373,7 +391,28 @@ board_games %>%
 ---
 class: top, center
 
-# FINN'S SLIDE
+# What mechanics do we enjoy? 
+```{r game_mechanic_pie, alt.text = "Pie chart showing the distribution of game mechanics preferred by DCS 210, broken down by proportion. The most preferred game mechanic was Area Control making up 33.3 percent of responses. Dice rolling and card drafting were the next more popular, with 20 percent of the class preferring those mechanics."} 
+prop_pie <- data.frame (
+  mechanics = c("Area Control", "Dice Rolling", "Card Drafting", "Modular Board", "Hex and Counter", "Hand Management"),
+  proportion = c(33.3, 20.0, 20.0, 13.3, 6.6, 6.6))
+  
+ggplot(data = prop_pie, mapping = aes(x = "", y = proportion, fill = mechanics)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    coord_polar(theta = "y", start = 0) + 
+    geom_text(aes(label = paste0(proportion, "%", mechanics)),
+              position = position_stack(vjust = 0.5)) + 
+    scale_fill_manual(values = c("#D73027", "#FC8D59",
+                                 "#FEE090", "#E0F3F8", "91BfDB", "4575B4")) +
+    theme(axis.text = element_blank(),
+          axis.ticks = element_blank(),
+          panel.grid  = element_blank()) +
+    labs(
+      title = "Proportion of Preferred Game Mechanics",
+      subtitle = "from surveyed students in DCS 210",
+      x = "",
+      y = "")
+```
 
 ---
 class: inverse, center, middle
