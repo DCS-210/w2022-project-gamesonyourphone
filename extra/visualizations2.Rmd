@@ -167,7 +167,7 @@ Gamesonyourphone_ %>%
   mutate(proportion = (count/15)*100)
 ```
 
-```{r game_mechanic_pie, alt.text = "Pie chart showing the distrobution of game mechanics perfered by DCS 210, broken down by proportion. The most prefered game mechnic was Area Control makig up 33.3 percent of responses. Dice rolling and card drafting were the next more popular, with 20 percent of the class perfering those mechanics."} 
+```{r game_mechanic_pie, alt.text = "Pie chart showing the distribution of game mechanics preferred by DCS 210, broken down by proportion. The most preferred game mechanic was Area Control making up 33.3 percent of responses. Dice rolling and card drafting were the next more popular, with 20 percent of the class preferring those mechanics."} 
 prop_pie <- data.frame (
   mechanics = c("Area Control", "Dice Rolling", "Card Drafting", "Modular Board", "Hex and Counter", "Hand Management"),
   proportion = c(33.3, 20.0, 20.0, 13.3, 6.6, 6.6))
@@ -175,17 +175,21 @@ prop_pie <- data.frame (
 ggplot(data = prop_pie, mapping = aes(x = "", y = proportion, fill = mechanics)) + 
     geom_bar(stat = "identity", color = "black") + 
     coord_polar(theta = "y", start = 0) + 
-    geom_text(aes(label = paste0(proportion, "%")),
+    geom_text(aes(label = paste0(proportion, "%", mechanics)),
               position = position_stack(vjust = 0.5)) + 
-   scale_fill_manual(values = c("#D73027", "#FC8D59",
-                               "#FEE090", "#E0F3F8", "91BfDB", "4575B4")) +
+    scale_fill_manual(values = c("#D73027", "#FC8D59",
+                                 "#FEE090", "#E0F3F8", "91BfDB", "4575B4")) +
+    theme(axis.text = element_blank(),
+          axis.ticks = element_blank(),
+          panel.grid  = element_blank()) +
     labs(
       title = "Proportion of Preferred Game Mechanics",
       subtitle = "from surveyed students in DCS 210",
       x = "",
       y = "")
 ```
-```{r game_mechanic_pie, alt.text = "Pie chart showing the distrobution of game mechanics perfered by DCS 210, broken down by proportion. The most prefered game mechnic was Area Control makig up 33.3 percent of responses. Dice rolling and card drafting were the next more popular, with 20 percent of the class perfering those mechanics."} 
+
+``` {r game_mechanic_pie, alt.text = "Pie chart showing the distrobution of game mechanics preferred by DCS 210, broken down by proportion. The most preferred game mechanic was Area Control makig up 33.3 percent of responses. Dice rolling and card drafting were the next more popular, with 20 percent of the class preferred those mechanics."} 
 prop_pie_cat <- data.frame (
   categories = c("Card", "War Game", "Fantasy", "Economic", "Fighting", "Science Fiction", "Dice"),
   cat_proportion = c(33.3, 33.3, 13.3, 6.6, 6.6, 6.6, 6.6))
@@ -193,10 +197,13 @@ prop_pie_cat <- data.frame (
 ggplot(data = prop_pie_cat, mapping = aes(x = "", y = cat_proportion, fill = categories)) + 
     geom_bar(stat = "identity", color = "black") + 
     coord_polar(theta = "y", start = 0) + 
-    geom_text(aes(label = paste0(cat_proportion, "%")),
+    geom_text(aes(label = paste0(cat_proportion, "%", categories)),
               position = position_stack(vjust = 0.5)) + 
-   scale_fill_manual(values = c("#D73027", "#FC8D59",
+    scale_fill_manual(values = c("#D73027", "#FC8D59",
                                "#FEE090", "#FFFFBF", "#E0F3F8", "91BfDB", "4575B4")) +
+    theme(axis.text = element_blank(),
+          axis.ticks = element_blank(),
+          panel.grid  = element_blank()) +
     labs(
       title = "Proportion of Preferred Game Categories",
       subtitle = "from surveyed students in DCS 210",
@@ -205,10 +212,26 @@ ggplot(data = prop_pie_cat, mapping = aes(x = "", y = cat_proportion, fill = cat
 ```
 
 
-```{r game_mechanic_pop_bar alt.text = ""}
+```{r game_mechanic_pop_bar alt.text = "A bar chart showing how the median rating of board game by game mechanic. On average the most well rated game mechanic was area control scoring a median rating of 6.83/10. Variable player powers was next highest rated at 6.82/10. Set collection and tile placement came last, both averaging a score of 6.5."}
+
+median_rating_mechanic <- data.frame (
+  mechanics = c("Set Collection", "Tile Placement", "Hand Management", "Dice Rolling", "Modular Board", "Hex-and-Counter", "Card Drafting", "Variable Player Powers", "Area Control / Area Influence"),
+  median_ratings = c(6.362520, 6.467080, 6.539565, 6.616235, 6.639640, 6.753595, 6.761220, 6.824460, 6.839340))
+
+  ggplot(median_rating_mechanic, aes(x = median_ratings, fct_relevel(mechanics, "Set Collection", "Tile Placement","Hand Management", "Dice Rolling", "Modular Board", "Hex-and-Counter", "Card Drafting", "Variable Player Powers", "Area Control / Area Influence"), fill = mechanics)) +
+  geom_col(stat = "identity", show.legend = FALSE) +
+  scale_fill_manual(values = c('#b35806','#e08214','#fdb863','#fee0b6','#f7f7f7','#d8daeb','#b2abd2','#8073ac','#542788')) +
+  geom_text(aes(label = median_ratings), position = position_stack(vjust = 0.5)) +
+  labs(
+      title = "Average Median Rating of Board Games",
+      subtitle = "by game mechanic",
+      x = "Median Rating",
+      y = "Game Mechanic") 
+```
+```{r}
 board_games %>%
-  separate_rows(mechanic, sep = ",") %>% 
-  group_by(mechanic) %>% 
+  #separate_rows(mechanic, sep = ",") %>% 
+  #group_by(mechanic) %>% 
   subset(mechanic %in% c("Area Control / Area Influence", 
                          "Variable Player Powers", 
                          "Card Drafting", 
@@ -218,11 +241,8 @@ board_games %>%
                          "Hand Management",
                          "Tile Placement",
                          "Set Collection")) %>% 
-  mutate(count = n(), adjusted_rating = average_rating/count) %>% 
-  mutate(median = median(adjusted_rating)) %>% 
-  ggplot(aes(x = median, y = mechanic, color = mechanic, fill = mechanic)) +
-  geom_col()
-  #facet_grid(mechanic ~ average_rating)
+  #mutate(median = median(average_rating, count = n())) %>% 
+  fct_relevel(mechanics, "Set Collection", "Tile Placement","Hand Management", "Dice Rolling", "Modular Board", "Hex-and-Counter", "Card Drafting", "Variable Player Powers", "Area Control / Area Influence"),
 ```
 
 ```{r game_mechanic_pop_bar alt.text = ""}
