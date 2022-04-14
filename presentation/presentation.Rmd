@@ -14,6 +14,9 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 ---
+```{r import-board-games, include=FALSE, echo=FALSE}
+board_games <- readr::read_csv("/cloud/project/data/board_games.csv")
+```
 
 ```{r load-packages, include = FALSE}
 # Add any additional packages you need to this chunk
@@ -23,7 +26,8 @@ library(palmerpenguins)
 library(knitr)
 library(xaringanthemer)
 install.packages("readxl")
-library("readxl")
+library(readxl)
+source("/cloud/project/extra/HeatMap_Prep.R")
 ```
 
 ```{r setup, include=FALSE}
@@ -32,177 +36,290 @@ knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618,
 ```
 
 ```{r importing-class-data, include=FALSE}
-library("readxl")
-read_excel("C:\\Users\\finnconway\\Desktop\\Gamesonyourphone?.xlsx")
+library(readxl)
+read_excel("/cloud/project/extra/Gamesonyourphone?.xlsx")
 ```
 
 ```{r style, echo=FALSE}
 style_solarized_dark()
 ```
 
-
+---
 class: center, top
 
 ## Goals and Questions
 
-- How do factors like playtime, game mechanics, and game categories impact the popularity of board games?
+- How does playing time impact the popularity of board games?
+
+--
+
 - What categories do games fit into, and how do they overlap?
-- How have games changed over time, and how are older games perceived now?
+
+--
+
+- How do game mechanics influence how games are perceived?
+
+--
+
+- How does our class data align with the broader board game dataset?
 
 ---
-
 class: inverse, center, middle
 
 # Our Data
 
 ---
+class: top, center
 
-# Hello World
-
-- Click the `Knit` button to compile your presentation
-
-- Make sure to commit and push all resulting files to your GitHub repo
-
----
-
-class: inverse, middle, center
-
-# Using xaringan
-
----
-
-# xaringan
-
-- The presentation is created using the `xaringan` package
-
-- Use `---` to separate slides and `--` for incremental builds
+## Where did we find this?
 
 --
-
-- Like this
+```{r tidytuesday-image, echo=FALSE, out.width ='60%', fig.align = 'center'}
+include_graphics("https://github.com/rfordatascience/tidytuesday/raw/master/static/tt_logo.png")
+```
 
 ---
+class: top, center
 
-# Layouts
+## What's in this set?
 
-You can use plain text
+--
+```{r glimpse-set, echo=FALSE}
+glimpse(board_games)
+```
+---
+class: top, center
 
-- or bullet points
+## What's in this set?
 
+--
+### A lot.
+
+--
 .pull-left[
-or text in two columns $^*$
+
+- Name
+- Description
+- Image
+- Designer
+- Family
+- Publisher
+- Game mechanic
+- Category
 ]
+
+--
 .pull-right[
-- like
-- this
-]
-
-.footnote[
-[*] And add footnotes
+- Minimum/maximum playtime
+- Minimum age
+- Minimum/maximum players
+- Year published
+- Number of ratings
+- **Average rating**
 ]
 
 ---
+class: inverse, center, middle
 
-# Code
-
-```{r boring-regression}
-# a boring regression
-model <- lm(dist ~ speed, data = cars)
-tidy(model)
-glance(model)
-```
+# Playing Time
 
 ---
+class: top, center, middle
 
-# Plots
+# JACKSON'S SLIDE
+```{r, echo=F, include= F}
+board_games%>%
+  arrange(desc(max_playtime))
 
-```{r recode-species, echo = FALSE}
-# In this chunk I'm doing a bunch of analysis that I don't want to present 
-# in my slides. But I need the resulting data frame for a plot I want to present.
-iris_modified <- iris %>%
-  mutate(Species = fct_other(Species, keep = "setosa"))
+board_games <- board_games %>%
+  mutate(
+    playtime_group = case_when(
+      playing_time < 1 ~ "N/A",
+      playing_time >= 1 & playing_time <= 20 ~ "Under 20 minutes",
+      playing_time >= 21 & playing_time <= 40 ~ "20-40 minutes",
+      playing_time >= 41 & playing_time <= 60 ~ "40-60 minutes",
+      playing_time >= 61 & playing_time <= 120 ~ "1-2 hours",
+      playing_time >= 121 & playing_time <= 180 ~ "2-3 hours",
+      playing_time >= 181 & playing_time <= 240 ~ "3-4 hours",
+      playing_time >= 241 & playing_time <= 360 ~ "4-6 hours",
+      playing_time >= 361 ~ "Over 6 hours"
+    ))
+``` 
+.center[
+```{r bar-plot, warning = FALSE, echo = FALSE, message = FALSE, fig.alt= "In this graph, we have a histogram displaying the frequency of games in each group of playing times. It reveals that most games are under an hour, with a fairly even split between the groups of 0-20 minutes and 20-40. The 40-60 group has the most number of games. Beyond that, there are a few spikes around convenient time labels such as 2 hours, 3 hours etc, but the vast majority of games lie in this under an hour range.", out.width = "70%", out.height = "70%" }
+barchart <- board_games %>%
+  filter(playing_time <= 400)
+
+fig1 <-ggplot(data = barchart, aes(playing_time, fill= factor(playtime_group, 
+                                                          c("Under 20 minutes",
+                                                            "20-40 minutes",
+                                                            "40-60 minutes",
+                                                            "1-2 hours",
+                                                            "2-3 hours",
+                                                            "3-4 hours",
+                                                            "4-6 hours",
+                                                            "over 6 hours",
+                                                            "NA")))) +
+    geom_histogram() +
+    xlim(0,500) +
+    labs(title = "Playtime density",
+       x = "Playing time (minutes)",
+       y = "Count",
+       fill = "Length of Play") +
+    scale_fill_viridis_d() + 
+    theme_minimal()
+  
+ggplotly(fig1)
 ```
-
-```{r plot-iris, echo = FALSE}
-# Code hidden with echo = FALSE
-# Uses modified iris dataset from previous chunk
-# Play around with height and width until you're happy with the look
-ggplot(data = iris_modified, mapping = aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
-  geom_point() + 
-  theme_minimal() # theme options: https://ggplot2.tidyverse.org/reference/ggtheme.html
-```
-
----
-
-## Plot and text
-
-.pull-left[
-- Some text
-- goes here
 ]
-.pull-right[
-```{r warning=FALSE, out.width="100%", fig.width=4, echo=FALSE}
-# see how I changed out.width and fig.width from defaults
-# to make the figure bigger
-ggplot(penguins, aes(x = bill_length_mm, y = species, color = species)) +
-  geom_boxplot() +
+---
+class: top, center, middle
+
+# JACKSON'S SLIDE
+
+```{r violin-plot, echo = F, warning = F, message = F, fig.alt = "", out.width = "70%", out.height= "70%"}
+board_games %>% 
+  
+ggplot(aes(x = playtime_group , y = average_rating, fill= factor(playtime_group, 
+                                                          c("Under 20 minutes",
+                                                            "20-40 minutes",
+                                                            "40-60 minutes",
+                                                            "1-2 hours",
+                                                            "2-3 hours",
+                                                            "3-4 hours",
+                                                            "4-6 hours")))) +
+  labs(title = "Rating of games",
+       subtitle = "By playtime length",
+       fill = "Playtime Group",
+       x = "Length of Play",
+       y = "Game Rating") +
+  theme(axis.text.x=element_text(angle = -45, hjust = 0)) +
+  geom_violin()  + 
+  scale_x_discrete(limits = c("Under 20 minutes",
+                                                            "20-40 minutes",
+                                                            "40-60 minutes",
+                                                            "1-2 hours",
+                                                            "2-3 hours",
+                                                            "3-4 hours",
+                                                            "4-6 hours"))+ 
+  scale_fill_viridis_d()
+```
+---
+class: top, center, middle
+
+# JACKSON'S SLIDE
+```{r best-boardgame, echo = F, warning = F, message = F, fig.alt = "", out.width = "70%", out.height= "70%"}
+best_boardgame <- board_games %>%
+  filter(users_rated >= 50) %>%
+  select(name, average_rating, users_rated, category, year_published, playing_time)
+
+pointfig <- ggplot(data = best_boardgame, mapping = aes(x = average_rating, y = users_rated)) +
+  
+  geom_point(data = best_boardgame, mapping = aes(color = (year_published))) +
+  labs(title = "Amount of users rated vs. rating of game",
+       subtitle = "Colored by year published",
+       x = "Average rating",
+       y = "Amount of user ratings", 
+       color = "Year published") + 
   theme_minimal()
+ggplotly(pointfig)
+```
+---
+class: inverse, center, middle
+
+# Categories
+
+---
+class: top, center
+
+## What categories are used?
+```{r categories, echo=FALSE, include=FALSE}
+categories <- board_games %>% 
+  select(category) %>% 
+  separate(category, into = c("category1", "category2", "category3", "category4"), sep = ",")
+```
+--
+.pull-left[
+
+### Primary Categories
+
+```{r top-categories1, echo=FALSE}
+categories %>% 
+  group_by(category1) %>% 
+  count() %>% 
+  arrange(desc(n))
+```
+]
+
+--
+.pull-right[
+
+### Secondary Categories
+
+```{r top-categories2, echo=FALSE}
+categories %>% 
+  group_by(category2) %>% 
+  count() %>% 
+  arrange(desc(n))
 ```
 ]
 
 ---
+class: top, center
 
-# Tables
+## How do they overlap?
 
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
+```{r heatmap, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%'}
+colors <- c("#ffffb2", "#fed976", "#feb24c", "#fd8d3c", "#f03b20", "#bd0026")
 
-```{r iris-table, echo = FALSE}
-kable(head(iris), format = "html")
+map_counts %>% 
+  ggplot(aes(x = category2, y = category1, fill = n)) +
+  geom_tile() +
+  labs(title = "Heatmap of Category Overlaps",
+       x = "Category 2",
+       y = "Category 1",
+       fill = "Number of Overlaps") +
+  theme_xaringan() +
+  theme(title = element_text(size = 15),
+        axis.title = element_blank(),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 90),
+        legend.title = element_text(size = 12),
+        legend.text = element_text(size = 10)) +
+  scale_fill_stepsn(colors = colors, values = c(0, 0.01, 0.1, 0.25, 0.6, 1))
 ```
 
 ---
+class: inverse, center, middle
 
-# Images
-
-```{r castle, echo = FALSE, out.width = "60%", fig.align = "center", fig.cap = "Image credit: Photo by Jörg Angeli on Unsplash."}
-include_graphics("https://images.unsplash.com/photo-1535448033526-c0e85c9e6968?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80")
-```
-
-Or you can also include a full page image. See next slide.
+# Game Mechanics
 
 ---
+class: top, center
 
-background-image: url(https://images.unsplash.com/photo-1535448033526-c0e85c9e6968?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80)
-
----
-
-# Math Expressions
-
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. &#36;\alpha+\beta$ renders $\alpha+\beta$. You can use the display style with double dollar signs:
-
-```
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-```
-
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-
-Limitations:
-
-1. The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
-
-1. There should not be spaces after the opening `$` or before the closing `$`.
-
-1. Math does not work on the title slide (see [#61](https://github.com/yihui/xaringan/issues/61) for a workaround).
+# FINN'S SLIDE
 
 ---
+class: top, center
 
-# Feeling adventurous?
+# FINN'S SLIDE
 
-- Want to find out more about `xaringan`? See https://slides.yihui.name/xaringan/#1.
+---
+class: top, center
 
-- You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
+# FINN'S SLIDE
 
-- But some of you might want to play around with slide styling. The 
-`xaringanthemer` provides some solutions for this that: https://pkg.garrickadenbuie.com/xaringanthemer.
+---
+class: inverse, center, middle
 
-- And if you want more bells and whistles, there is also `xaringanExtra`: https://pkg.garrickadenbuie.com/xaringanExtra.
+# Class Data
+
+---
+class: top, center
+
+# What do we think about board games?
+
+---
+class: top, center
+
+## More about the class dataset
