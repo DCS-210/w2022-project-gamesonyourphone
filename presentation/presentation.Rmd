@@ -37,7 +37,7 @@ knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618,
 
 ```{r importing-class-data, include=FALSE}
 library(readxl)
-read_excel("/cloud/project/extra/Gamesonyourphone?.xlsx")
+Gamesonyourphone_ <- read_excel("/cloud/project/extra/Gamesonyourphone?.xlsx")
 ```
 
 ```{r style, echo=FALSE}
@@ -126,9 +126,17 @@ class: inverse, center, middle
 ---
 class: top, center, middle
 
-# JACKSON'S SLIDE
+## How long do games take?
+```{r def-standard-theme, echo=FALSE, include=FALSE}
+theme_standard <- theme(title = element_text(size = 15),
+        axis.title = element_blank(),
+        axis.text = element_text(size = 10),
+        legend.title = element_text(size = 12),
+        legend.text = element_text(size = 10))
+```
+
 ```{r, echo=F, include= F}
-board_games%>%
+board_games %>%
   arrange(desc(max_playtime))
 
 board_games <- board_games %>%
@@ -146,7 +154,7 @@ board_games <- board_games %>%
     ))
 ``` 
 .center[
-```{r bar-plot, warning = FALSE, echo = FALSE, message = FALSE, fig.alt= "In this graph, we have a histogram displaying the frequency of games in each group of playing times. It reveals that most games are under an hour, with a fairly even split between the groups of 0-20 minutes and 20-40. The 40-60 group has the most number of games. Beyond that, there are a few spikes around convenient time labels such as 2 hours, 3 hours etc, but the vast majority of games lie in this under an hour range.", out.width = "70%", out.height = "70%" }
+```{r bar-plot, warning = FALSE, echo = FALSE, message = FALSE, fig.alt= "In this graph, we have a histogram displaying the frequency of games in each group of playing times. It reveals that most games are under an hour, with a fairly even split between the groups of 0-20 minutes and 20-40. The 40-60 group has the most number of games. Beyond that, there are a few spikes around convenient time labels such as 2 hours, 3 hours etc, but the vast majority of games lie in this under an hour range.", out.width = "70%", out.height = "70%", fig.align='center' }
 barchart <- board_games %>%
   filter(playing_time <= 400)
 
@@ -167,7 +175,9 @@ fig1 <-ggplot(data = barchart, aes(playing_time, fill= factor(playtime_group,
        y = "Count",
        fill = "Length of Play") +
     scale_fill_viridis_d() + 
-    theme_minimal()
+    theme_void() +
+    theme_standard +
+    theme_xaringan()
   
 ggplotly(fig1)
 ```
@@ -175,9 +185,9 @@ ggplotly(fig1)
 ---
 class: top, center, middle
 
-# JACKSON'S SLIDE
+## Rating of Games by Playtime
 
-```{r violin-plot, echo = F, warning = F, message = F, fig.alt = "", out.width = "70%", out.height= "70%"}
+```{r violin-plot, echo = F, warning = F, message = F, fig.alt = "", out.width = "70%", out.height= "70%", fig.align='center'}
 board_games %>% 
   
 ggplot(aes(x = playtime_group , y = average_rating, fill= factor(playtime_group, 
@@ -188,9 +198,7 @@ ggplot(aes(x = playtime_group , y = average_rating, fill= factor(playtime_group,
                                                             "2-3 hours",
                                                             "3-4 hours",
                                                             "4-6 hours")))) +
-  labs(title = "Rating of games",
-       subtitle = "By playtime length",
-       fill = "Playtime Group",
+  labs(fill = "Playtime Group",
        x = "Length of Play",
        y = "Game Rating") +
   theme(axis.text.x=element_text(angle = -45, hjust = 0)) +
@@ -202,26 +210,34 @@ ggplot(aes(x = playtime_group , y = average_rating, fill= factor(playtime_group,
                                                             "2-3 hours",
                                                             "3-4 hours",
                                                             "4-6 hours"))+ 
-  scale_fill_viridis_d()
+  scale_fill_viridis_d() +
+  theme_xaringan() +
+  theme_standard
 ```
 ---
 class: top, center, middle
 
-# JACKSON'S SLIDE
-```{r best-boardgame, echo = F, warning = F, message = F, fig.alt = "", out.width = "70%", out.height= "70%"}
+## Number of Ratings vs Rating of Game
+### By Year Published
+```{r best-boardgame, echo = F, warning = F, message = F, fig.alt = "", out.width = "80%", out.height= "70%", fig.align = 'center'}
+
+colors <- c("#ffffb2", "#fed976", "#feb24c", "#fd8d3c", "#f03b20", "#bd0026")
+
 best_boardgame <- board_games %>%
   filter(users_rated >= 50) %>%
   select(name, average_rating, users_rated, category, year_published, playing_time)
 
 pointfig <- ggplot(data = best_boardgame, mapping = aes(x = average_rating, y = users_rated)) +
   
-  geom_point(data = best_boardgame, mapping = aes(color = (year_published))) +
-  labs(title = "Amount of users rated vs. rating of game",
-       subtitle = "Colored by year published",
-       x = "Average rating",
+  geom_point(data = best_boardgame, mapping = aes(color = (year_published)), alpha = 0.5) +
+  labs(x = "Average rating",
        y = "Amount of user ratings", 
        color = "Year published") + 
-  theme_minimal()
+  theme_void() +
+  theme_xaringan() +
+  theme_standard +
+  scale_color_stepsn(colors = colors)
+
 ggplotly(pointfig)
 ```
 ---
@@ -269,7 +285,7 @@ class: top, center
 
 ## How do they overlap?
 
-```{r heatmap, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%'}
+```{r heatmap, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%', fig.alt="Heatmap of overlapping game categories, which shows that the most common two-category game descriptions are Fantasy Card Games and Bluffing Card Games."}
 colors <- c("#ffffb2", "#fed976", "#feb24c", "#fd8d3c", "#f03b20", "#bd0026")
 
 map_counts %>% 
@@ -280,15 +296,38 @@ map_counts %>%
        y = "Category 1",
        fill = "Number of Overlaps") +
   theme_xaringan() +
-  theme(title = element_text(size = 15),
-        axis.title = element_blank(),
-        axis.text = element_text(size = 10),
-        axis.text.x = element_text(angle = 90),
-        legend.title = element_text(size = 12),
-        legend.text = element_text(size = 10)) +
-  scale_fill_stepsn(colors = colors, values = c(0, 0.01, 0.1, 0.25, 0.6, 1))
+  theme_standard +
+  theme(axis.text.x = element_text(angle = 90)) +
+  scale_fill_stepsn(colors = colors)
 ```
+---
+class: center, top
 
+## What categories do we enjoy?
+
+``` {r cat-pie-chart, echo=FALSE, warning=FALSE, out.width='80%', alt.text = "Pie chart showing the distrobution of game mechanics preferred by DCS 210, broken down by proportion. The most preferred game mechanic was Area Control makig up 33.3 percent of responses. Dice rolling and card drafting were the next more popular, with 20 percent of the class preferred those mechanics."} 
+prop_pie_cat <- data.frame (
+  categories = c("Card", "War Game", "Fantasy", "Economic", "Fighting", "Science Fiction", "Dice"),
+  cat_proportion = c(33.3, 33.3, 13.3, 6.6, 6.6, 6.6, 6.6))
+  
+ggplot(data = prop_pie_cat, mapping = aes(x = "", y = cat_proportion, fill = categories)) + 
+    geom_bar(stat = "identity", color = "black") + 
+    coord_polar(theta = "y", start = 0) + 
+    geom_text(aes(label = paste0(cat_proportion, "%", categories)),
+              position = position_stack(vjust = 0.5)) + 
+    scale_fill_manual(values = c("#D73027", "#FC8D59",
+                               "#FEE090", "#FFFFBF", "#E0F3F8", "91BfDB", "4575B4")) +
+    theme(axis.text = element_blank(),
+          axis.ticks = element_blank(),
+          panel.grid  = element_blank()) +
+    labs(
+      title = "Proportion of Preferred Game Categories",
+      subtitle = "from surveyed students in DCS 210",
+      x = "",
+      y = "") +
+  theme_xaringan() +
+  theme_standard 
+```
 ---
 class: inverse, center, middle
 
@@ -297,13 +336,52 @@ class: inverse, center, middle
 ---
 class: top, center
 
-# FINN'S SLIDE
+## What is a game mechanic?
 
 ---
 class: top, center
 
-# FINN'S SLIDE
+## What are the highest rated game mechnics?
 
+```{r game_mechanic_pop_bar, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%', alt.text = "A bar chart showing how the median rating of board game by game mechanic. On average the most well rated game mechanic was area control scoring a median rating of 6.83/10. Variable player powers was next highest rated at 6.82/10. Set collection and tile placement came last, both averaging a score of 6.5."}
+
+median_rating_mechanic <- data.frame (
+  mechanics = c("Set Collection", "Tile Placement", "Hand Management", "Dice Rolling", "Modular Board", "Hex-and-Counter", "Card Drafting", "Variable Player Powers", "Area Control / Area Influence"),
+  median_ratings = c(6.362520, 6.467080, 6.539565, 6.616235, 6.639640, 6.753595, 6.761220, 6.824460, 6.839340))
+
+ggplot(median_rating_mechanic, aes(x = median_ratings, 
+                                    fct_relevel(mechanics, "Set Collection", 
+                                                "Tile Placement",
+                                                "Hand Management", 
+                                                "Dice Rolling",
+                                                "Modular Board", 
+                                                "Hex-and-Counter", 
+                                                "Card Drafting", 
+                                                "Variable Player Powers", 
+                                                "Area Control / Area Influence"), 
+                                    fill = mechanics)) +
+  geom_col(stat = "identity", show.legend = FALSE) +
+  scale_fill_manual(values = c('#b35806','#e08214','#fdb863','#fee0b6','#f7f7f7','#d8daeb','#b2abd2','#8073ac','#542788')) +
+  geom_text(aes(label = median_ratings), position = position_stack(vjust = 0.5)) +
+  labs(
+      title = "Average Median Rating of Board Games",
+      subtitle = "by game mechanic",
+      x = "Median Rating",
+      y = "Game Mechanic") +
+  theme_xaringan() +
+  theme_standard
+```
+---
+class: top, center
+
+# What are the most common game mechanics?
+``` {r count_game_mechanic, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%', alt.text = "."}
+board_games %>% 
+  separate_rows(mechanic, sep = ",") %>% 
+  group_by(mechanic) %>% 
+  summarize(count = n()) %>% 
+  arrange(desc(count))
+```
 ---
 class: top, center
 
@@ -312,14 +390,17 @@ class: top, center
 ---
 class: inverse, center, middle
 
-# Class Data
+# What was this classes favorite board game?
+
+```{r class-fav-game, echo=FALSE}
+Gamesonyourphone_ %>% 
+  group_by(fav_game) %>% 
+  count() %>% 
+  arrange(desc(n))
+```
 
 ---
-class: top, center
+class: inverse, center, middle
 
-# What do we think about board games?
-
----
-class: top, center
-
-## More about the class dataset
+# Thank you!
+## Questions, Comments, Concerns?

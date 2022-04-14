@@ -102,10 +102,8 @@ We are also curious about which categories frequently appear together, and might
 board_games %>% 
   separate_rows(mechanic, sep = ",") %>% 
   group_by(mechanic) %>% 
-  summarize(median = median(average_rating),
-            count = n()) %>% 
-  filter(count > 750) %>%
-  arrange(desc(median), desc(count), )
+  summarize(count = n()) %>% 
+  arrange(desc(count))
 ```
 
 
