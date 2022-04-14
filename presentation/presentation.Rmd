@@ -185,7 +185,7 @@ ggplotly(fig1)
 ```
 ]
 ---
-class: top, center, middle
+class: top, center, inverse
 
 ## Rating of Games by Playtime
 
@@ -408,7 +408,7 @@ board_games %>%
 class: top, center
 
 # What mechanics do we enjoy? 
-```{r game_mechanic_pie, alt.text = "Pie chart showing the distribution of game mechanics preferred by DCS 210, broken down by proportion. The most preferred game mechanic was Area Control making up 33.3 percent of responses. Dice rolling and card drafting were the next more popular, with 20 percent of the class preferring those mechanics."} 
+```{r game_mechanic_pie, alt.text = "Pie chart showing the distribution of game mechanics preferred by DCS 210, broken down by proportion. The most preferred game mechanic was Area Control making up 33.3 percent of responses. Dice rolling and card drafting were the next more popular, with 20 percent of the class preferring those mechanics.", echo=FALSE, warning=FALSE} 
 prop_pie <- data.frame (
   mechanics = c("Area Control", "Dice Rolling", "Card Drafting", "Modular Board", "Hex and Counter", "Hand Management"),
   proportion = c(33.3, 20.0, 20.0, 13.3, 6.6, 6.6))
@@ -427,13 +427,17 @@ ggplot(data = prop_pie, mapping = aes(x = "", y = proportion, fill = mechanics))
       title = "Proportion of Preferred Game Mechanics",
       subtitle = "from surveyed students in DCS 210",
       x = "",
-      y = "")
+      y = "") +
+  theme_xaringan() +
+  theme_standard
 ```
 
 ---
 class: inverse, center, middle
 
 # What was this classes favorite board game?
+
+--
 
 ```{r class-fav-game, echo=FALSE}
 Gamesonyourphone_ %>% 
