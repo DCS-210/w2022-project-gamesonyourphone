@@ -228,14 +228,15 @@ colors <- c("#ffffb2", "#fed976", "#feb24c", "#fd8d3c", "#f03b20", "#bd0026")
 
 best_boardgame <- board_games %>%
   filter(users_rated >= 50) %>%
+  filter(playing_time <= 100) %>%
   select(name, average_rating, users_rated, category, year_published, playing_time)
 
 pointfig <- ggplot(data = best_boardgame, mapping = aes(x = average_rating, y = users_rated)) +
   
-  geom_point(data = best_boardgame, mapping = aes(color = (year_published)), alpha = 0.5) +
+  geom_point(data = best_boardgame, mapping = aes(color = (playing_time)), alpha = 0.5) +
   labs(x = "Average rating",
        y = "Amount of user ratings", 
-       color = "Year published") + 
+       color = "Playing Time") + 
   theme_void() +
   theme_xaringan() +
   theme_standard +
