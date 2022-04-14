@@ -1,6 +1,7 @@
 Board Games: There are more of them than you'd think!
 ================
 by Gamesonyourphone?
+
 Grace Acton, Finn Conway, Jackson Donahue
 
 ## Summary
@@ -30,14 +31,6 @@ games are most frequently based on “Dice”, “Deduction”, and “Memory”
 Thinking about the goal of children’s games, this makes sense - they are
 frequently educational, and can teach skills like math and logical
 reasoning while improving memory.
-
-You can also load your data here and present any analysis results /
-plots, but I strongly urge you to keep that to a minimum (maybe only the
-most important graphic, if you have one you can choose). And make sure
-to hide your code with `echo = FALSE` unless the point you are trying to
-make is about the code itself. Your results with proper output and
-graphics go in your presentation, this space is for a brief summary of
-your project.
 
 ### Mechanics (Finn)
 
