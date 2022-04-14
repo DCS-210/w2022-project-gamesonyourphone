@@ -124,20 +124,106 @@ class: inverse, center, middle
 # Playing Time
 
 ---
-class: top, center
+class: top, center, middle
 
 # JACKSON'S SLIDE
+```{r, echo=F, include= F}
+board_games%>%
+  arrange(desc(max_playtime))
 
+board_games <- board_games %>%
+  mutate(
+    playtime_group = case_when(
+      playing_time < 1 ~ "N/A",
+      playing_time >= 1 & playing_time <= 20 ~ "Under 20 minutes",
+      playing_time >= 21 & playing_time <= 40 ~ "20-40 minutes",
+      playing_time >= 41 & playing_time <= 60 ~ "40-60 minutes",
+      playing_time >= 61 & playing_time <= 120 ~ "1-2 hours",
+      playing_time >= 121 & playing_time <= 180 ~ "2-3 hours",
+      playing_time >= 181 & playing_time <= 240 ~ "3-4 hours",
+      playing_time >= 241 & playing_time <= 360 ~ "4-6 hours",
+      playing_time >= 361 ~ "Over 6 hours"
+    ))
+``` 
+.center[
+```{r bar-plot, warning = FALSE, echo = FALSE, message = FALSE, fig.alt= "In this graph, we have a histogram displaying the frequency of games in each group of playing times. It reveals that most games are under an hour, with a fairly even split between the groups of 0-20 minutes and 20-40. The 40-60 group has the most number of games. Beyond that, there are a few spikes around convenient time labels such as 2 hours, 3 hours etc, but the vast majority of games lie in this under an hour range.", out.width = "70%", out.height = "70%" }
+barchart <- board_games %>%
+  filter(playing_time <= 400)
+
+fig1 <-ggplot(data = barchart, aes(playing_time, fill= factor(playtime_group, 
+                                                          c("Under 20 minutes",
+                                                            "20-40 minutes",
+                                                            "40-60 minutes",
+                                                            "1-2 hours",
+                                                            "2-3 hours",
+                                                            "3-4 hours",
+                                                            "4-6 hours",
+                                                            "over 6 hours",
+                                                            "NA")))) +
+    geom_histogram() +
+    xlim(0,500) +
+    labs(title = "Playtime density",
+       x = "Playing time (minutes)",
+       y = "Count",
+       fill = "Length of Play") +
+    scale_fill_viridis_d() + 
+    theme_minimal()
+  
+ggplotly(fig1)
+```
+]
 ---
-class: top, center
+class: top, center, middle
 
 # JACKSON'S SLIDE
 
+```{r violin-plot, echo = F, warning = F, message = F, fig.alt = "", out.width = "70%", out.height= "70%"}
+board_games %>% 
+  
+ggplot(aes(x = playtime_group , y = average_rating, fill= factor(playtime_group, 
+                                                          c("Under 20 minutes",
+                                                            "20-40 minutes",
+                                                            "40-60 minutes",
+                                                            "1-2 hours",
+                                                            "2-3 hours",
+                                                            "3-4 hours",
+                                                            "4-6 hours")))) +
+  labs(title = "Rating of games",
+       subtitle = "By playtime length",
+       fill = "Playtime Group",
+       x = "Length of Play",
+       y = "Game Rating") +
+  theme(axis.text.x=element_text(angle = -45, hjust = 0)) +
+  geom_violin()  + 
+  scale_x_discrete(limits = c("Under 20 minutes",
+                                                            "20-40 minutes",
+                                                            "40-60 minutes",
+                                                            "1-2 hours",
+                                                            "2-3 hours",
+                                                            "3-4 hours",
+                                                            "4-6 hours"))+ 
+  scale_fill_viridis_d()
+```
 ---
-class: top, center
+class: top, center, middle
 
 # JACKSON'S SLIDE
+```{r best-boardgame, echo = F, warning = F, message = F, fig.alt = "", out.width = "70%", out.height= "70%"}
+best_boardgame <- board_games %>%
+  filter(users_rated >= 50) %>%
+  select(name, average_rating, users_rated, category, year_published, playing_time)
 
+pointfig <- ggplot(data = best_boardgame, mapping = aes(x = average_rating, y = users_rated)) +
+  
+  geom_point(data = best_boardgame, mapping = aes(color = (year_published))) +
+  labs(title = "Amount of users rated vs. rating of game",
+       subtitle = "Colored by year published",
+       x = "Average rating",
+       y = "Amount of user ratings", 
+       color = "Year published") + 
+  theme_minimal()
+ggplotly(pointfig)
+```
 ---
 class: inverse, center, middle
 

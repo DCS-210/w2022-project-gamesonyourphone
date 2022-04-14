@@ -7,7 +7,7 @@ output: html_document
  
 
 ```{r heatmap}
-colors <- c("#ffffb2", "#fed976", "#feb24c", "#fd8d3c", "#f03b20", "#bd0026")
+colors <- c("#ffffff", "#f2f0f7", "#cbc9e2", "#9e9ac8", "#756bb1", "#54278f")
 
 map_counts %>% 
   ggplot(aes(x = category2, y = category1, fill = n)) +

@@ -9,6 +9,17 @@ output: html_document
 #library(readxl)
 #Gamesonyourphone_ <- read_excel("extra/Gamesonyourphone?.xlsx")
 #View(Gamesonyourphone_) 
+library(viridis)
+library(plotly)
+library(tidyverse)
+library(tidymodels)
+library(knitr)
+library(xaringanthemer)
+library(readxl)
+```
+
+```{r import-data}
+board_games <- readr::read_csv("/cloud/project/data/board_games.csv")
 ```
 
 ## R Markdown
@@ -17,23 +28,15 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
-```
-
 ## Including Plots
 
 You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 ```{r}
-#board_games%>%
-#  arrange(desc(max_playtime))
+board_games%>%
+  arrange(desc(max_playtime))
 
 board_games <- board_games %>%
   mutate(
@@ -48,7 +51,7 @@ board_games <- board_games %>%
       playing_time >= 241 & playing_time <= 360 ~ "4-6 hours",
       playing_time >= 361 ~ "Over 6 hours"
     ))
-```
+``` 
 
 ```{r}
 board_games%>%
@@ -66,19 +69,69 @@ board_games%>%
 stacked barplot
  
 
-```{r, fig.alt= "In this graph, we have a histogram displaying the frequency of games in each group of playing times. It reveals that most games are under an hour, with a fairly even split between the groups of 0-20 minutes and 20-40. The 40-60 group has the most number of games. Beyond that, there are a few spikes around convenient time labels such as 2 hours, 3 hours etc, but the vast majority of games lie in this under an hour range.  }
-ggplot(data = board_games, aes(playing_time, fill=playtime_group)) +
-  geom_histogram() +
-  xlim(0,500)
+```{r bar-plot, warning = FALSE, echo = FALSE, message = FALSE, fig.alt= "In this graph, we have a histogram displaying the frequency of games in each group of playing times. It reveals that most games are under an hour, with a fairly even split between the groups of 0-20 minutes and 20-40. The 40-60 group has the most number of games. Beyond that, there are a few spikes around convenient time labels such as 2 hours, 3 hours etc, but the vast majority of games lie in this under an hour range."  }
+fig1 <-ggplot(data = board_games, aes(playing_time, fill= factor(playtime_group, 
+                                                          c("Under 20 minutes",
+                                                            "20-40 minutes",
+                                                            "40-60 minutes",
+                                                            "1-2 hours",
+                                                            "2-3 hours",
+                                                            "3-4 hours",
+                                                            "4-6 hours",
+                                                            "over 6 hours",
+                                                            "NA")))) +
+    geom_histogram() +
+    xlim(0,500) +
+    labs(title = "Playtime density",
+       x = "Playing time (minutes)",
+       y = "Count",
+       fill = "Length of Play") +
+    scale_fill_viridis_d() + 
+    theme_minimal()
+  
+ggplotly(fig1)
 ```
-```{r}
+```{r violin-plot, echo = F, warning = F, message = F, fig.alt = ""}
 board_games %>% 
-  ggplot(aes(x = playtime_group , y = average_rating, color = playtime_group)) +
-  geom_violin()
+  
+ggplot(aes(x = playtime_group , y = average_rating, fill= factor(playtime_group, 
+                                                          c("Under 20 minutes",
+                                                            "20-40 minutes",
+                                                            "40-60 minutes",
+                                                            "1-2 hours",
+                                                            "2-3 hours",
+                                                            "3-4 hours",
+                                                            "4-6 hours")))) +
+  labs(title = "Rating of games",
+       subtitle = "By playtime length",
+       fill = "Playtime Group",
+       x = "Length of Play",
+       y = "Game Rating") +
+  theme(axis.text.x=element_text(angle = -45, hjust = 0)) +
+  geom_violin()  + 
+  scale_x_discrete(limits = c("Under 20 minutes",
+                                                            "20-40 minutes",
+                                                            "40-60 minutes",
+                                                            "1-2 hours",
+                                                            "2-3 hours",
+                                                            "3-4 hours",
+                                                            "4-6 hours"))+ 
+  scale_fill_viridis_d()
 ```
 
 Research questions: Does this change with recommended ages? 
 Does this change with different game categories?
+
+```{r best-boardgame, echo = F, warning = F, message = F, fig.alt = ""}
+best_boardgame <- board_games %>%
+  select(name, average_rating, users_rated)
+
+ggplot(data = best_boardgame, mapping = aes(x = users_rated, y = average_rating,
+                                            fill = name)) + 
+  geom_point()
+```
+
+
 
 
 ```{r}
@@ -228,31 +281,5 @@ median_rating_mechanic <- data.frame (
       x = "Median Rating",
       y = "Game Mechanic") 
 ```
-```{r}
-board_games %>%
-  #separate_rows(mechanic, sep = ",") %>% 
-  #group_by(mechanic) %>% 
-  subset(mechanic %in% c("Area Control / Area Influence", 
-                         "Variable Player Powers", 
-                         "Card Drafting", 
-                         "Hex-and-Counter", 
-                         "Modular Board", 
-                         "Dice Rolling",
-                         "Hand Management",
-                         "Tile Placement",
-                         "Set Collection")) %>% 
-  #mutate(median = median(average_rating, count = n())) %>% 
-  fct_relevel(mechanics, "Set Collection", "Tile Placement","Hand Management", "Dice Rolling", "Modular Board", "Hex-and-Counter", "Card Drafting", "Variable Player Powers", "Area Control / Area Influence"),
-```
 
-```{r game_mechanic_pop_bar alt.text = ""}
-board_games %>%
-  separate_rows(mechanic, sep = ",") %>% 
-  group_by(mechanic) %>% 
-  subset(mechanic %in% c("Area Control / Area Influence")) %>% 
-  mutate(median = median(average_rating)) %>% 
-  mutate(count = n(), adjusted_rating = average_rating/count) %>% 
-  ggplot(aes(y = adjusted_rating, x = mechanic, color = mechanic, fill = mechanic)) +
-  geom_col() +
-  facet_wrap( ~ playtime_group)
-```
+
