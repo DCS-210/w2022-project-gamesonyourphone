@@ -14,9 +14,7 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 ---
-```{r import-board-games, include=FALSE, echo=FALSE}
-board_games <- readr::read_csv("/cloud/project/data/board_games.csv")
-```
+
 
 ```{r load-packages, include = FALSE}
 # Add any additional packages you need to this chunk
@@ -30,14 +28,15 @@ library(readxl)
 source("/cloud/project/extra/HeatMap_Prep.R")
 ```
 
+```{r import-data, include=FALSE, echo=FALSE}
+board_games <- readr::read_csv("/cloud/project/data/board_games.csv")
+
+Gamesonyourphone_ <- read_excel("/cloud/project/extra/Gamesonyourphone?.xlsx")
+```
+
 ```{r setup, include=FALSE}
 # For better figure resolution
 knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618, out.width = "80%")
-```
-
-```{r importing-class-data, include=FALSE}
-library(readxl)
-Gamesonyourphone_ <- read_excel("/cloud/project/extra/Gamesonyourphone?.xlsx")
 ```
 
 ```{r style, echo=FALSE}
@@ -74,7 +73,7 @@ class: top, center
 ## Where did we find this?
 
 --
-```{r tidytuesday-image, echo=FALSE, out.width ='60%', fig.align = 'center'}
+```{r tidytuesday-image, echo=FALSE, out.width ='60%', fig.align = 'center', fig.alt="TidyTuesday logo"}
 include_graphics("https://github.com/rfordatascience/tidytuesday/raw/master/static/tt_logo.png")
 ```
 
