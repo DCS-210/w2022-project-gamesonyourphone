@@ -74,7 +74,7 @@ class: top, center
 ## Where did we find this?
 
 --
-```{r tidytuesday-image, echo=FALSE, out.width ='60%', fig.align = 'center', fig.alt="TidyTuesday logo"}
+```{r tidytuesday-image, echo=FALSE, out.width ='60%', fig.align = 'center', fig.alt="TidyTuesday logo."}
 include_graphics("https://github.com/rfordatascience/tidytuesday/raw/master/static/tt_logo.png")
 ```
 
@@ -365,7 +365,7 @@ class: center, top
 
 ## What categories do we enjoy?
 
-``` {r cat-pie-chart, echo=FALSE, warning=FALSE, out.width='80%', alt.text = "Pie chart showing the distrobution of game mechanics preferred by DCS 210, broken down by proportion. The most preferred game mechanic was Area Control makig up 33.3 percent of responses. Dice rolling and card drafting were the next more popular, with 20 percent of the class preferred those mechanics."} 
+``` {r cat-pie-chart, echo=FALSE, warning=FALSE, out.width='80%', fig.alt = "Pie chart showing the distrobution of game mechanics preferred by DCS 210, broken down by proportion. The most preferred game mechanic was Area Control makig up 33.3 percent of responses. Dice rolling and card drafting were the next more popular, with 20 percent of the class preferred those mechanics."} 
 prop_pie_cat <- data.frame (
   categories = c("Card", "War Game", "Fantasy", "Economic", "Fighting", "Science Fiction", "Dice"),
   cat_proportion = c(33.3, 33.3, 13.3, 6.6, 6.6, 6.6, 6.6))
@@ -421,7 +421,7 @@ class: top, center
 
 ## What are the highest rated game mechnics?
 
-```{r game_mechanic_pop_bar, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%', alt.text = "A bar chart showing how the median rating of board game by game mechanic. On average the most well rated game mechanic was area control scoring a median rating of 6.83/10. Variable player powers was next highest rated at 6.82/10. Set collection and tile placement came last, both averaging a score of 6.5."}
+```{r game_mechanic_pop_bar, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%', fig.alt = "A bar chart showing how the median rating of board game by game mechanic. On average the most well rated game mechanic was area control scoring a median rating of 6.83/10. Variable player powers was next highest rated at 6.82/10. Set collection and tile placement came last, both averaging a score of 6.5."}
 
 median_rating_mechanic <- data.frame (
   mechanics = c("Set Collection", "Tile Placement", "Hand Management", "Dice Rolling", "Modular Board", "Hex-and-Counter", "Card Drafting", "Variable Player Powers", "Area Control / Area Influence"),
@@ -453,7 +453,7 @@ ggplot(median_rating_mechanic, aes(x = median_ratings,
 class: top, center
 
 # What are the most common game mechanics?
-``` {r count_game_mechanic, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%', alt.text = "."}
+``` {r count_game_mechanic, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%'}
 board_games %>% 
   separate_rows(mechanic, sep = ",") %>% 
   group_by(mechanic) %>% 
