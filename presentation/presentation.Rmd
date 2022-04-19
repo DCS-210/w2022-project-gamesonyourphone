@@ -25,13 +25,14 @@ library(knitr)
 library(xaringanthemer)
 install.packages("readxl")
 library(readxl)
-source("/cloud/project/extra/HeatMap_Prep.R")
 ```
 
 ```{r import-data, include=FALSE, echo=FALSE}
 board_games <- readr::read_csv("/cloud/project/data/board_games.csv")
 
-Gamesonyourphone_ <- read_excel("/cloud/project/extra/Gamesonyourphone?.xlsx")
+Gamesonyourphone_ <- read_excel("/cloud/project/data/Gamesonyourphone?.xlsx")
+
+source("/cloud/project/extra/HeatMap_Prep.R")
 ```
 
 ```{r setup, include=FALSE}
@@ -128,11 +129,11 @@ class: top, center, middle
 
 ## How long do games take?
 ```{r def-standard-theme, echo=FALSE, include=FALSE}
-theme_standard <- theme(title = element_text(size = 15),
-        axis.title = element_blank(),
-        axis.text = element_text(size = 10),
-        legend.title = element_text(size = 12),
-        legend.text = element_text(size = 10))
+theme_standard <- theme(title = element_text(size = 15), 
+                        axis.title = element_text(size = 12), 
+                        axis.text = element_text(size = 10), 
+                        legend.title = element_text(size = 12), 
+                        legend.text = element_text(size = 10))
 ```
 
 ```{r, echo=F, include= F}
@@ -154,7 +155,6 @@ board_games <- board_games %>%
     ))
 ``` 
 
-.center[
 ```{r bar-plot, warning = FALSE, echo = FALSE, message = FALSE, fig.alt= "In this graph, we have a histogram displaying the frequency of games in each group of playing times. It reveals that most games are under an hour, with a fairly even split between the groups of 0-20 minutes and 20-40. The 40-60 group has the most number of games. Beyond that, there are a few spikes around convenient time labels such as 2 hours, 3 hours etc, but the vast majority of games lie in this under an hour range.", out.width = "70%", out.height = "70%", fig.align='center' }
 barchart <- board_games %>%
   filter(playing_time <= 400)
@@ -177,18 +177,17 @@ fig1 <-ggplot(data = barchart, aes(playing_time, fill= factor(playtime_group,
        fill = "Length of Play") +
     scale_fill_viridis_d() + 
     theme_void() +
-    theme_standard +
-    theme_xaringan()
+    theme_xaringan() +
+    theme_standard 
   
 ggplotly(fig1)
 ```
-]
 ---
 class: top, center, inverse
 
 ## Rating of Games by Playtime
 
-```{r violin-plot, echo = F, warning = F, message = F, fig.alt = "This violin plot shows a violin shape corresponding to each group of playing times. The average of each group is represented as the widest part of the violin, while the tails represent the spread of the data. It seems that longer playing games tend to have higher ratings and shorter spreads, so most people enjoyed these games, while shorter playtimes had more variety.", out.width = "70%", out.height= "70%", fig.align='center'}
+```{r violin-plot, echo = F, warning = F, message = F, fig.alt = "Violin plot of playing times. The average of each group is represented as the widest part of the violin, while the tails represent the spread of the data. It seems that longer playing games tend to have higher ratings and shorter spreads, so most people enjoyed these games, while shorter playtimes had more variety.", out.width = "70%", out.height= "70%", fig.align='center'}
 board_games %>% 
   
 ggplot(aes(x = playtime_group , y = average_rating, fill= factor(playtime_group, 
@@ -217,12 +216,11 @@ ggplot(aes(x = playtime_group , y = average_rating, fill= factor(playtime_group,
 ```
 
 ---
-class: top, center, middle
+class: top, center
 
-## Number of Ratings vs Rating of Game
-### By Year Published
-```{r best-boardgame, echo = F, warning = F, message = F, fig.alt = "This scatterplot shows a dot representing each game in the dataset under 100 minutes long. It then plots these points based on average rating and users rated, and includes a color scale that shows hwo long each game was from 0-100 miniutes. We found that most points are generally higher rated and the more users rating the game, generally means it will have a higher average rating.", out.width = "80%", out.height= "70%", fig.align = 'center'}
-
+## Number of Ratings vs Average Rating
+### Colored by Play Time
+```{r best-boardgame, echo = F, warning = F, message = F, fig.alt = "Scatterplot of games under 100 minutes, plotting average rating versus users rated, and colored by game length. We found that most points are generally higher rated and the more users rating the game, generally means it will have a higher average rating.", out.width = "70%", out.height= "70%", fig.align = 'center'}
 colors <- c("#ffffb2", "#fed976", "#feb24c", "#fd8d3c", "#f03b20", "#bd0026")
 
 best_boardgame <- board_games %>%
@@ -230,20 +228,77 @@ best_boardgame <- board_games %>%
   filter(playing_time <= 100) %>%
   select(name, average_rating, users_rated, category, year_published, playing_time)
 
-pointfig <- ggplot(data = best_boardgame, mapping = aes(x = average_rating, y = users_rated)) +
-  
+ggplot(data = best_boardgame, mapping = aes(x = average_rating, y = users_rated)) +
   geom_point(data = best_boardgame, mapping = aes(color = (playing_time)), alpha = 0.5) +
   labs(x = "Average rating",
        y = "Amount of user ratings", 
        color = "Playing Time") + 
-  theme_void() +
   theme_xaringan() +
   theme_standard +
   scale_color_stepsn(colors = colors)
-
-ggplotly(pointfig)
 ```
 ---
+class: top, center
+
+## Number of Ratings vs Average Rating
+### Colored by Play Time
+
+```{r boardgame-lin-reg, echo = F, warning = F, message = F, fig.alt = "Previous scatterplot with an added trendline, showing that the number of ratings a game receives increases with average rating.", out.width = "70%", out.height= "70%", fig.align = 'center'}
+
+ggplot(data = best_boardgame, mapping = aes(x = average_rating, y = users_rated)) +
+  geom_point(aes(color = (playing_time)), alpha = 0.5) +
+  geom_smooth(method='lm', color = "white") +
+  labs(x = "Average rating",
+       y = "Amount of user ratings", 
+       color = "Playing Time") + 
+  theme_xaringan() +
+  theme_standard +
+  scale_color_stepsn(colors = colors) 
+```
+---
+class: top, center
+
+## A Linear Model of Popularity
+
+How does popularity (number of ratings) vary with playing time, average rating, and year published?
+
+--
+```{r lin-reg-popularity, echo=FALSE}
+pop_model <- lm(users_rated ~ year_published + playing_time + average_rating, data = board_games)
+
+summary(pop_model)
+```
+---
+class: top, center
+
+## A Linear Model of Popularity
+
+$$\widehat{users.rated} = 7603.78 - 5.91(year.published) - 0.083(playing.time) + 801.00(average.rating)$$
+--
+
+According to this model,
+
+.pull-left[
+
+More recent games and longer games tend to have fewer ratings.
+]
+
+.pull-right[
+
+More highly-rated games have more ratings.
+]
+
+--
+
+.center[
+### However, note the adjusted R-squared of 0.05242
+
+--
+
+There isn't a strong linear relationship between number of ratings and these other variables!
+]
+---
+
 class: inverse, center, middle
 
 # Categories
@@ -252,6 +307,7 @@ class: inverse, center, middle
 class: top, center
 
 ## What categories are used?
+
 ```{r categories, echo=FALSE, include=FALSE}
 categories <- board_games %>% 
   select(category) %>% 
@@ -431,7 +487,25 @@ ggplot(data = prop_pie, mapping = aes(x = "", y = proportion, fill = mechanics))
   theme_xaringan() +
   theme_standard
 ```
+---
+class: inverse, center, top
 
+## In Summary,
+
+--
+- Longer playing time makes tends to make games less popular. 
+
+--
+
+- Games can fit in many categories, and card games tend to overlap with more secondary categories. 
+
+--
+
+- Although Dice Rolling games are most prevalent, Area Control is the highest rated game mechanic. 
+
+--
+
+-  As a class, we agree with the popularity of Area Control games as the best mechanic, and enjoy games in the Card and Dice categories. 
 ---
 class: inverse, center, middle
 
