@@ -228,7 +228,7 @@ prop_pie <- data.frame (
 ggplot(data = prop_pie, mapping = aes(x = "", y = proportion, fill = mechanics)) + 
     geom_bar(stat = "identity", color = "black") + 
     coord_polar(theta = "y", start = 0) + 
-    geom_text(aes(label = paste0(proportion, "%", mechanics)),
+    geom_text(aes(label = paste0(proportion, "%")),
               position = position_stack(vjust = 0.5)) + 
     scale_fill_manual(values = c("#D73027", "#FC8D59",
                                  "#FEE090", "#E0F3F8", "91BfDB", "4575B4")) +
@@ -250,7 +250,7 @@ prop_pie_cat <- data.frame (
 ggplot(data = prop_pie_cat, mapping = aes(x = "", y = cat_proportion, fill = categories)) + 
     geom_bar(stat = "identity", color = "black") + 
     coord_polar(theta = "y", start = 0) + 
-    geom_text(aes(label = paste0(cat_proportion, "%", categories)),
+    geom_text(aes(label = paste0(cat_proportion, "%")),
               position = position_stack(vjust = 0.5)) + 
     scale_fill_manual(values = c("#D73027", "#FC8D59",
                                "#FEE090", "#FFFFBF", "#E0F3F8", "91BfDB", "4575B4")) +
@@ -281,5 +281,11 @@ median_rating_mechanic <- data.frame (
       x = "Median Rating",
       y = "Game Mechanic") 
 ```
-
+``` {r count_game_mechanic, echo=FALSE, warning=FALSE, fig.align = 'center', out.width='80%', alt.text = "."}
+board_games %>% 
+  separate_rows(mechanic, sep = ",") %>% 
+  group_by(mechanic) %>% 
+  summarize(count = n()) %>% 
+  arrange(desc(count))
+```
 
