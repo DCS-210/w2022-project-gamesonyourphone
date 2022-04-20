@@ -6,6 +6,9 @@ Grace Acton, Finn Conway, Jackson Donahue
 
 ## Summary
 
+### Introduction
+Our project dives into the world of board games. We got our data from a website, boardgamegeek, which prompts users to rate the board game they plaed, and stashes all these ratings in a comprehensive database. As it turns out, there are many factors which must be accounted for as variables when examining the ratings of board games. These variables include but are not limited to: playtime, age, number of players, year published, gaem mechanics, etc. In our work we thoroughly examine playtime, game category, and game mechanics, and explore the relationship between these variables and the ratings from the dataset, as well as out own class's reports. 
+
 ### Categories (Grace)
 
 The BoardGameGeek dataset provides a category variable, which defines
@@ -62,6 +65,10 @@ higher ratings.
 ### Playtime (Jackson)
 
 What kind of relationships can we observe and analyze between playtime, age group, rating, and other variables in our dataset? To answer these questions, we created a variety of visualizations mainly based on a mutated variable we call "Playtime_group". This separates the playing time of each game into a few categories: Under 20 minutes, 20-40 minutes, 40-60 minutes, 1-2 hours, 2-3 hours, 4-6 hours, and above 6 hours. Did you know there are some games that are supposed to take 20+ years to fully complete? Although we removed it from our dataset for visual purposes, we were taken aback by "The Conquest for Northern Africa" and its immense playtime. To do all this, we used a mutate and case_when function to create our groups, and we left out any game that had a playtime of more than 1000 minutes with a filter function when we created the histogram that would show us exactly what the relationship is between our variables. This led us to create a barplot, violin plot, and finally a scatterplot. These visuals showed us a few results about playtime, such as the fact that longer playtimes generally mean higher ratings. We believe this can be attributed to the notion that the longer time you spend committed to a game, the more likely you are to enjoy it. The possibilities are endless when you have so many interesting variables to consider and compare, so the final steps of this part of the project will be narrowing it down to just three ways of visualizing the relationship between playtime group, rating and game category. 
+
+### Conclusion
+
+Our findings are well documented within the figures we reproduced, but it is worth revisiting them. The longer playing games tended to have high ratings, and we hypothesize that if you spend a lot of time on a game, the more likely you are to not only rate it but also rate it highly. We also found that popular games (rated frequently) have higher ratings, and this would also follow a similar line of reasoning, we suspect. More people play the game, and thus more people like the game. We also noticed high ratings across the board for the most part, and this along with the previous observation can be attributed to the fact that most people would go on this website to rate games they liked, not games they disliked. We found that the most popular game categories were wargames and card games, and seeing as these were very common in the dataset it follows from the same logic as the previous observation. Meanwhile, our class dataset added a fun element, being something relatable that we created ourselves, but it was such a small dataset that it was hard to compare with the boardgamegeek dataset using realistic statistical observances. All in all we had a lot of fun and learned some cool things about board games, which was important to us. 
 
 ## Presentation
 
